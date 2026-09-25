@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ meta_description }}">
+<link rel="canonical" href="{{ canonical }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ meta_description }}">
+<meta property="og:url" content="{{ canonical }}">
+{% block head %}{% endblock %}
+<style>
+:root { color-scheme: light dark; --ink: #16181d; --muted: #5b6270; --line: #e3e6ec; --bg: #fff; }
+@media (prefers-color-scheme: dark) {
+  :root { --ink: #e8eaee; --muted: #a0a7b4; --line: #2b2f38; --bg: #14161a; }
+}
+* { box-sizing: border-box; }
+body { margin: 0 auto; padding: 24px 16px 64px; max-width: 760px; background: var(--bg); color: var(--ink);
+       font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+h1 { font-size: 1.9rem; line-height: 1.25; margin: 8px 0 16px; }
+h2 { font-size: 1.25rem; margin: 32px 0 8px; }
+h3 { font-size: 1rem; margin: 20px 0 4px; }
+p { margin: 0 0 12px; }
+a { color: inherit; }
+nav.crumbs, footer { color: var(--muted); font-size: .85rem; }
+nav.crumbs ol { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+nav.crumbs li:not(:last-child)::after { content: "/"; padding-left: 6px; color: var(--line); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 8px; margin: 16px 0; }
+.grid figure { margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 8px; text-align: center; }
+.grid figcaption { font-size: .72rem; color: var(--muted); margin-top: 6px; word-break: break-word; }
+.related ul { padding-left: 18px; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+footer { border-top: 1px solid var(--line); margin-top: 48px; padding-top: 12px; }
+</style>
+</head>
+<body>
+<nav class="crumbs" aria-label="Breadcrumb">
+  <ol>
+    {% for crumb in breadcrumbs %}
+    <li>{% if not loop.last %}<a href="{{ crumb.url }}">{{ crumb.name }}</a>{% else %}<span aria-current="page">{{ crumb.name }}</span>{% endif %}</li>
+    {% endfor %}
+  </ol>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer>
+  <p>Generated from {{ meta.source_file }} on {{ meta.generated_at }} · content: {{ meta.content_source }} · clustering: {{ meta.cluster_source }}</p>
+</footer>
+<script type="application/ld+json">{{ json_ld | tojson }}</script>
+</body>
+</html>

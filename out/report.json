@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-25T11:20:57+00:00",
+  "generated_at": "2026-09-25T11:36:38+00:00",
   "input": {
     "path": "data/gsc_queries.csv",
     "encoding": "utf-8-sig",
@@ -23,7 +23,7 @@
   },
   "mode": {
     "llm": false,
-    "stage": "filters",
+    "stage": "render",
     "keep_brand": false,
     "keep_third_party": false,
     "config": "config/config.toml"
@@ -69,9 +69,224 @@
       }
     }
   },
-  "clusters": [],
+  "clusters": [
+    {
+      "slug": "custom-cursor",
+      "primary_keyword": "custom cursor",
+      "intent": "transactional",
+      "file": "custom-cursor.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Custom Cursor | Icons8",
+      "queries": [
+        "custom cursor",
+        "cursor custom",
+        "cursor download",
+        "custom cursors",
+        "custom icons",
+        "custom cursor download",
+        "custom mouse cursor",
+        "custom cursor for windows",
+        "custom cursor for mac",
+        "dot cursor",
+        "custom cursor for android",
+        "cursor icon",
+        "custom icon",
+        "cursors",
+        "custom curser",
+        "crosshair cursor"
+      ],
+      "clicks": 10068,
+      "impressions": 419088,
+      "avg_position": 5.77,
+      "potential": 165546
+    },
+    {
+      "slug": "icons",
+      "primary_keyword": "icons",
+      "intent": "transactional",
+      "file": "icons.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Icons | Icons8",
+      "queries": [
+        "icons",
+        "icon"
+      ],
+      "clicks": 23715,
+      "impressions": 372648,
+      "avg_position": 4.58,
+      "potential": 84288
+    },
+    {
+      "slug": "free-icons",
+      "primary_keyword": "free icons",
+      "intent": "transactional",
+      "file": "free-icons.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Free Icons | Icons8",
+      "queries": [
+        "free icons",
+        "free icon",
+        "icon free",
+        "icons free",
+        "free icons download",
+        "free svg icons",
+        "free icon download",
+        "free svg",
+        "icons free download",
+        "icon free download",
+        "icons download free",
+        "free icons png",
+        "free png icons",
+        "download free icons",
+        "free icons svg",
+        "free icons download for pc",
+        "freeicon",
+        "icon svg free",
+        "free svg icon",
+        "icon png free",
+        "icon maker free",
+        "free svg icons download"
+      ],
+      "clicks": 16759,
+      "impressions": 156544,
+      "avg_position": 4.36,
+      "potential": 30810
+    },
+    {
+      "slug": "favicon-icon",
+      "primary_keyword": "favicon icon",
+      "intent": "transactional",
+      "file": "favicon-icon.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Favicon Icon | Icons8",
+      "queries": [
+        "favicon download",
+        "download favicon",
+        "favicons",
+        "favicon icon",
+        "free favicons",
+        "favicon.ico",
+        "favicon free",
+        "free favicon"
+      ],
+      "clicks": 1161,
+      "impressions": 46406,
+      "avg_position": 6.91,
+      "potential": 26031
+    },
+    {
+      "slug": "icon-pack",
+      "primary_keyword": "icon pack",
+      "intent": "transactional",
+      "file": "icon-pack.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Icon Pack | Icons8",
+      "queries": [
+        "icon pack",
+        "icon pack download",
+        "icon pack for windows 11"
+      ],
+      "clicks": 744,
+      "impressions": 9348,
+      "avg_position": 5.86,
+      "potential": 3816
+    },
+    {
+      "slug": "icon-svg",
+      "primary_keyword": "icon svg",
+      "intent": "transactional",
+      "file": "icon-svg.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Icon SVG | Icons8",
+      "queries": [
+        "icon svg",
+        "icons svg"
+      ],
+      "clicks": 684,
+      "impressions": 10135,
+      "avg_position": 4.97,
+      "potential": 2848
+    },
+    {
+      "slug": "icon-png",
+      "primary_keyword": "icon png",
+      "intent": "transactional",
+      "file": "icon-png.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Icon PNG | Icons8",
+      "queries": [
+        "icon png",
+        "icons png"
+      ],
+      "clicks": 1432,
+      "impressions": 16656,
+      "avg_position": 4.08,
+      "potential": 2561
+    },
+    {
+      "slug": "icon-maker",
+      "primary_keyword": "icon maker",
+      "intent": "transactional",
+      "file": "icon-maker.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Icon Maker | Icons8",
+      "queries": [
+        "icon maker",
+        "icon maker online"
+      ],
+      "clicks": 892,
+      "impressions": 8007,
+      "avg_position": 5.2,
+      "potential": 2522
+    },
+    {
+      "slug": "desktop-icons",
+      "primary_keyword": "desktop icons",
+      "intent": "transactional",
+      "file": "desktop-icons.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Desktop Icons | Icons8",
+      "queries": [
+        "desktop icons",
+        "desktop icon download",
+        "desktop icon",
+        "icons for desktop"
+      ],
+      "clicks": 806,
+      "impressions": 6511,
+      "avg_position": 5.41,
+      "potential": 2251
+    },
+    {
+      "slug": "folder-icons",
+      "primary_keyword": "folder icons",
+      "intent": "transactional",
+      "file": "folder-icons.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "Folder Icons | Icons8",
+      "queries": [
+        "folder icons",
+        "folder icon"
+      ],
+      "clicks": 474,
+      "impressions": 14346,
+      "avg_position": 3.98,
+      "potential": 2004
+    }
+  ],
   "llm_usage": [],
   "warnings": [
-    "классификация выполнена правилами без LLM — стадия ещё не подключена"
+    "12 лексических групп не вошли в набор из 10 страниц",
+    "классификация и кластеризация выполнены правилами — LLM ещё не подключена"
   ]
 }

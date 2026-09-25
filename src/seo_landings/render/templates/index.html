@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+  <h1>{{ heading }}</h1>
+  <p>{{ intro }}</p>
+
+  <section>
+    <h2>Pages</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Landing page</th>
+          <th class="num" scope="col">Searches</th>
+          <th class="num" scope="col">Clicks</th>
+          <th class="num" scope="col">Impressions</th>
+          <th class="num" scope="col">Avg. position</th>
+          <th class="num" scope="col">Potential</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for page in pages %}
+        <tr>
+          <td><a href="{{ page.href }}">{{ page.anchor }}</a></td>
+          <td class="num">{{ page.queries }}</td>
+          <td class="num">{{ page.clicks }}</td>
+          <td class="num">{{ page.impressions }}</td>
+          <td class="num">{{ page.position }}</td>
+          <td class="num">{{ page.potential }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  {% if excluded %}
+  <section>
+    <h2>Queries left out</h2>
+    <p>Every exclusion is recorded with its reason in <code>excluded.csv</code>.</p>
+    <table>
+      <thead>
+        <tr><th scope="col">Reason</th><th class="num" scope="col">Queries</th>
+            <th class="num" scope="col">Clicks</th><th scope="col">Examples</th></tr>
+      </thead>
+      <tbody>
+        {% for row in excluded %}
+        <tr><td>{{ row.label }}</td><td class="num">{{ row.queries }}</td>
+            <td class="num">{{ row.clicks }}</td><td>{{ row.examples }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

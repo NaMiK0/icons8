@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+  <h1>{{ content.h1 }}</h1>
+  <p>{{ content.intro }}</p>
+
+  <section aria-label="Asset preview">
+    <div class="grid">
+      {% for asset in assets %}
+      <figure>
+        {{ asset.svg }}
+        <figcaption>{{ asset.label }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% for section in content.sections %}
+  <section>
+    <h2>{{ section.heading }}</h2>
+    {% for paragraph in section.paragraphs %}
+    <p>{{ paragraph }}</p>
+    {% endfor %}
+  </section>
+  {% endfor %}
+
+  {% if content.faq %}
+  <section>
+    <h2>Frequently asked questions</h2>
+    {% for item in content.faq %}
+    <h3>{{ item.question }}</h3>
+    <p>{{ item.answer }}</p>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if searches %}
+  <section>
+    <h2>Searches covered by this page</h2>
+    <table>
+      <thead>
+        <tr><th scope="col">Search</th><th class="num" scope="col">Clicks</th>
+            <th class="num" scope="col">Impressions</th><th class="num" scope="col">Position</th></tr>
+      </thead>
+      <tbody>
+        {% for row in searches %}
+        <tr><td>{{ row.text }}</td><td class="num">{{ row.clicks }}</td>
+            <td class="num">{{ row.impressions }}</td><td class="num">{{ row.position }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+
+  {% if related %}
+  <nav class="related" aria-label="Related pages">
+    <h2>Related pages</h2>
+    <ul>
+      {% for page in related %}
+      <li><a href="{{ page.href }}">{{ page.anchor }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+  {% endif %}
+</main>
+{% endblock %}

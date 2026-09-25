@@ -9,9 +9,12 @@
 import logging
 import sys
 
-from ..domain.models import Decision, LexicalGroup, Query
+from ..domain.models import Cluster, Decision, LexicalGroup, Query
 from ..ingest.loader import InputError, LoadResult, load_export
+from ..pipeline import cluster as cluster_module
+from ..pipeline import content as content_module
 from ..pipeline import filters, normalize
+from ..render.renderer import Renderer, SiteMeta
 from ..reporting.excluded import write_excluded
 from ..reporting.report import RunReport, describe_queries
 from ..settings import ConfigError
@@ -70,6 +73,23 @@ def main(argv: list[str] | None = None) -> int:
 
     groups = normalize.build_groups(kept)
 
+    cluster_policy = cluster_module.ClusterPolicy.from_settings(
+        options.settings, target=options.target_pages, tolerance=options.tolerance
+    )
+    clusters, uncovered = cluster_module.build_clusters(groups, cluster_policy)
+    if not clusters:
+        print("Не удалось собрать ни одного кластера.", file=sys.stderr)
+        return EXIT_NOTHING_TO_DO
+    if uncovered:
+        report.warn(
+            f"{len(uncovered)} лексических групп не вошли в набор из "
+            f"{len(clusters)} страниц"
+        )
+
+    site_name = options.settings.get("site.name", "Icons8")
+    for item in clusters:
+        item.content = content_module.build_template_content(item, site_name)
+
     report.input = {
         "path": str(options.input_path),
         "encoding": loaded.encoding,
@@ -84,29 +104,73 @@ def main(argv: list[str] | None = None) -> int:
     }
     report.mode = {
         "llm": False,
-        "stage": "filters",
+        "stage": "render",
         "keep_brand": options.keep_brand,
         "keep_third_party": options.keep_third_party,
         "config": str(options.settings.path) if options.settings.path else None,
     }
-    report.warn("классификация выполнена правилами без LLM — стадия ещё не подключена")
+    report.warn("классификация и кластеризация выполнены правилами — LLM ещё не подключена")
     report.add_filter_stats(decisions)
+    report.clusters = [_describe_cluster(item) for item in clusters]
 
     excluded_path = options.out_dir / "excluded.csv"
     report_path = options.out_dir / "report.json"
     dropped_count = write_excluded(decisions, excluded_path)
+
+    meta = SiteMeta(
+        site_name=site_name,
+        base_url=options.settings.get("site.base_url", "https://example.com/"),
+        source_file=options.input_path.name,
+        content_source="template",
+        cluster_source="lexical",
+        language=options.settings.get("market.language", "en"),
+    )
+    written = Renderer(meta).render_site(
+        clusters, options.out_dir, _excluded_rows(report)
+    )
     report.write(report_path)
 
     _print_input_summary(options, loaded, len(queries), len(duplicates), len(truncated))
     _print_filter_summary(report, decisions)
-    _print_queries("Топ кандидатов по потенциалу роста",
-                   sorted(kept, key=lambda q: -q.potential)[:TOP_ROWS])
+    _print_clusters(clusters)
     _print_groups(groups)
     _print_warnings(report.warnings)
-    print(f"\nОтчёт: {report_path}")
+    print(f"\nСтраниц собрано: {len(written) - 1} + хаб → {options.out_dir}/index.html")
+    print(f"Отчёт: {report_path}")
     print(f"Отброшено ({dropped_count}): {excluded_path}")
 
     return EXIT_OK
+
+
+def _describe_cluster(cluster: Cluster) -> dict:
+    content = cluster.content
+    return {
+        "slug": cluster.slug,
+        "primary_keyword": cluster.primary_keyword,
+        "intent": cluster.intent,
+        "file": f"{cluster.slug}.html",
+        "source": cluster.source,
+        "content_source": content.source if content else None,
+        "title": content.title if content else None,
+        "queries": [query.text for query in cluster.queries],
+        "clicks": cluster.clicks,
+        "impressions": cluster.impressions,
+        "avg_position": round(cluster.avg_position, 2) if cluster.avg_position else None,
+        "potential": round(cluster.potential),
+    }
+
+
+def _excluded_rows(report: RunReport) -> list[dict]:
+    """Сводка исключений для хаб-страницы."""
+    return [
+        {
+            "label": data["label"] or reason,
+            "queries": data["queries"],
+            "clicks": f"{data['clicks']:,}".replace(",", " "),
+            "examples": ", ".join(data["examples"]),
+        }
+        for reason, data in report.filters.get("by_reason", {}).items()
+    ]
 
 
 def _setup_logging(level: str) -> None:
@@ -150,6 +214,18 @@ def _print_filter_summary(report: RunReport, decisions: list[Decision]) -> None:
             f"  {reason:<22} {data['queries']:>3} запр.  "
             f"потенциал {data['potential']:>9,}".replace(",", " ")
             + f"  ← {examples}"
+        )
+
+
+def _print_clusters(clusters: list[Cluster]) -> None:
+    print(f"\nЛендингов: {len(clusters)}")
+    print(f"  {'страница':<28} {'запр.':>6} {'клики':>8} {'показы':>10} {'поз.':>6} {'потенциал':>11}")
+    for cluster in clusters:
+        position = f"{cluster.avg_position:.1f}" if cluster.avg_position else "—"
+        print(
+            f"  {_clip(cluster.slug + '.html', 28):<28} {len(cluster.queries):>6} "
+            f"{cluster.clicks:>8} {cluster.impressions:>10} {position:>6} "
+            f"{cluster.potential:>11,.0f}"
         )
 
 

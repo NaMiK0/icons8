@@ -135,3 +135,76 @@ class MergedDuplicate:
 
     kept: str
     absorbed: Query
+
+
+@dataclass(slots=True)
+class Section:
+    """Смысловой блок страницы: заголовок H2 и текст под ним."""
+
+    heading: str
+    paragraphs: list[str] = field(default_factory=list)
+
+
+@dataclass(slots=True)
+class FaqItem:
+    question: str
+    answer: str
+
+
+@dataclass(slots=True)
+class PageContent:
+    """Текстовое наполнение лендинга.
+
+    Источник (`source`) виден в отчёте и в футере страницы: шаблон и модель
+    должны быть различимы с первого взгляда, иначе непонятно, что именно
+    оценивать.
+    """
+
+    title: str
+    meta_description: str
+    h1: str
+    intro: str
+    sections: list[Section] = field(default_factory=list)
+    faq: list[FaqItem] = field(default_factory=list)
+    anchor_text: str = ""
+    source: Literal["llm", "template"] = "template"
+
+
+@dataclass(slots=True)
+class Cluster:
+    """Группа запросов, под которую делается одна страница."""
+
+    slug: str
+    primary_keyword: str
+    groups: list[LexicalGroup] = field(default_factory=list)
+    intent: Intent = "transactional"
+    source: Literal["llm", "lexical"] = "lexical"
+    rationale: str = ""
+    content: PageContent | None = None
+
+    @property
+    def queries(self) -> list[Query]:
+        """Все запросы кластера, самые весомые — первыми."""
+        collected = [query for group in self.groups for query in group.queries]
+        collected.sort(key=lambda q: (-q.clicks, -q.impressions, q.text))
+        return collected
+
+    @property
+    def clicks(self) -> int:
+        return sum(group.clicks for group in self.groups)
+
+    @property
+    def impressions(self) -> int:
+        return sum(group.impressions for group in self.groups)
+
+    @property
+    def potential(self) -> float:
+        return sum(group.potential for group in self.groups)
+
+    @property
+    def avg_position(self) -> float | None:
+        ranked = [q for q in self.queries if q.position is not None and q.impressions > 0]
+        if not ranked:
+            return None
+        total = sum(q.impressions for q in ranked)
+        return sum(q.position * q.impressions for q in ranked) / total
