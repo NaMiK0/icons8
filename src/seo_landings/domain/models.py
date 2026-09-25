@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from typing import Literal
 
 from . import scoring
+from .reasons import Reason
 
 Intent = Literal["transactional", "informational", "navigational"]
 
@@ -68,6 +69,23 @@ def merge_queries(queries: list[Query]) -> Query:
         ctr=ctr,
         position=position,
     )
+
+
+@dataclass(slots=True)
+class Decision:
+    """Решение по одному запросу: берём или нет, и на каком основании.
+
+    `source` важен не меньше причины: он показывает, кто решил — правило,
+    модель или дефолт при неполном ответе модели. Без этого нельзя честно
+    ответить, что именно добавила LLM поверх правил.
+    """
+
+    query: "Query"
+    keep: bool
+    reason: "Reason"
+    note: str = ""
+    source: Literal["rule", "llm", "default", "flag"] = "rule"
+    intent: Intent | None = None
 
 
 @dataclass(slots=True)

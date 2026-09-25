@@ -20,6 +20,8 @@ class Options:
     out_dir: Path
     settings: Settings
     max_queries: int
+    keep_brand: bool
+    keep_third_party: bool
     log_level: str
 
 
@@ -36,6 +38,10 @@ def build_parser() -> argparse.ArgumentParser:
                         help="путь к config.toml (по умолчанию: config/config.toml)")
     parser.add_argument("--max-queries", type=int, default=None, metavar="INT",
                         help="сколько запросов брать из выгрузки после склейки дублей")
+    parser.add_argument("--keep-brand", action="store_true",
+                        help="не отбрасывать запросы своего бренда")
+    parser.add_argument("--keep-third-party", action="store_true",
+                        help="не отбрасывать чужие бренды и связанные с ними символы")
     parser.add_argument("--log-level", default="INFO",
                         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
                         help="подробность вывода (по умолчанию: INFO)")
@@ -52,6 +58,8 @@ def resolve(argv: list[str] | None = None) -> Options:
         out_dir=Path(args.out),
         settings=settings,
         max_queries=_first(args.max_queries, settings.get("input.max_queries"), 500),
+        keep_brand=args.keep_brand,
+        keep_third_party=args.keep_third_party,
         log_level=args.log_level,
     )
 

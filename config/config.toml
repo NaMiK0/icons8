@@ -14,6 +14,14 @@ base_url = "https://icons8.com/"
 [market]
 # Рынок англоязычный: запросы на других языках отбрасываются.
 language = "en"
+# Слова, по которым язык виден без полного словаря. Нелатинские алфавиты
+# ловятся отдельным правилом, этот список — про латиницу: польский,
+# испанский, немецкий, турецкий и прочие «download» на своём языке.
+non_english_markers = [
+  "pobrania", "myszki", "kursor", "darmowe",
+  "descargar", "gratis", "gratuit", "telecharger", "kostenlos", "herunterladen",
+  "scarica", "baixar", "bedava", "indir", "unduh", "gratuito",
+]
 
 [brand]
 # Навигационные запросы своего бренда. Сравнение идёт по строке, из которой

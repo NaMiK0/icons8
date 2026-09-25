@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-09-25T11:20:57+00:00",
+  "input": {
+    "path": "data/gsc_queries.csv",
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "columns_found": {
+      "query": "query",
+      "clicks": "clicks",
+      "impressions": "impressions",
+      "ctr": "ctr",
+      "position": "position"
+    },
+    "columns_missing": [],
+    "rows_read": 100,
+    "rows_skipped": 0,
+    "duplicates_merged": 0,
+    "truncated": 0,
+    "queries": 100,
+    "clicks": 129593,
+    "impressions": 2268573,
+    "potential": 475448
+  },
+  "mode": {
+    "llm": false,
+    "stage": "filters",
+    "keep_brand": false,
+    "keep_third_party": false,
+    "config": "config/config.toml"
+  },
+  "filters": {
+    "kept": 78,
+    "dropped": 22,
+    "kept_clicks": 63526,
+    "dropped_clicks": 66067,
+    "kept_potential": 344351,
+    "dropped_potential": 131097,
+    "by_reason": {
+      "own_brand": {
+        "queries": 12,
+        "clicks": 42938,
+        "potential": 112,
+        "label": "navigational query for our own brand",
+        "examples": [
+          "icons8",
+          "icon8",
+          "icons 8"
+        ]
+      },
+      "third_party_brand": {
+        "queries": 9,
+        "clicks": 23040,
+        "potential": 130985,
+        "label": "third-party trademark",
+        "examples": [
+          "instagram blue tick copy",
+          "fake blue tick emoji copy and paste",
+          "phonepe"
+        ]
+      },
+      "non_english": {
+        "queries": 1,
+        "clicks": 89,
+        "potential": 0,
+        "label": "not English",
+        "examples": [
+          "kursor myszki do pobrania"
+        ]
+      }
+    }
+  },
+  "clusters": [],
+  "llm_usage": [],
+  "warnings": [
+    "классификация выполнена правилами без LLM — стадия ещё не подключена"
+  ]
+}
