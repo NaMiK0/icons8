@@ -1,0 +1,13 @@
+[project]
+name = "seo-landings"
+version = "0.1.0"
+description = "Собирает связанные лендинги из выгрузки запросов Google Search Console"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+# Тесты написаны на стандартном unittest и запускаются без pytest:
+#   python3 -m unittest discover -s tests -t .
+# Эта секция нужна только тем, кому привычнее pytest.
+pythonpath = ["src"]
+testpaths = ["tests"]
