@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# LLM response cache — regenerated on every run
+.cache/
+
+# macOS
+.DS_Store
+
+# Local environment
+.env
