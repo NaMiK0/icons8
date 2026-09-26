@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-25T11:36:38+00:00",
+  "generated_at": "2026-09-26T06:05:03+00:00",
   "input": {
     "path": "data/gsc_queries.csv",
     "encoding": "utf-8-sig",
@@ -22,19 +22,19 @@
     "potential": 475448
   },
   "mode": {
-    "llm": false,
+    "llm": true,
     "stage": "render",
     "keep_brand": false,
     "keep_third_party": false,
     "config": "config/config.toml"
   },
   "filters": {
-    "kept": 78,
-    "dropped": 22,
-    "kept_clicks": 63526,
-    "dropped_clicks": 66067,
-    "kept_potential": 344351,
-    "dropped_potential": 131097,
+    "kept": 74,
+    "dropped": 26,
+    "kept_clicks": 62977,
+    "dropped_clicks": 66616,
+    "kept_potential": 337936,
+    "dropped_potential": 137512,
     "by_reason": {
       "own_brand": {
         "queries": 12,
@@ -47,15 +47,26 @@
           "icons 8"
         ]
       },
+      "not_a_landing_intent": {
+        "queries": 7,
+        "clicks": 8850,
+        "potential": 6416,
+        "label": "intent does not fit a catalog landing page",
+        "examples": [
+          "fake blue tick emoji copy and paste",
+          "tiktok blue tick injector",
+          "verified badge copy and paste"
+        ]
+      },
       "third_party_brand": {
-        "queries": 9,
-        "clicks": 23040,
+        "queries": 6,
+        "clicks": 14739,
         "potential": 130985,
         "label": "third-party trademark",
         "examples": [
           "instagram blue tick copy",
-          "fake blue tick emoji copy and paste",
-          "phonepe"
+          "phonepe",
+          "shazam"
         ]
       },
       "non_english": {
@@ -147,13 +158,12 @@
         "icon svg free",
         "free svg icon",
         "icon png free",
-        "icon maker free",
         "free svg icons download"
       ],
-      "clicks": 16759,
-      "impressions": 156544,
+      "clicks": 16662,
+      "impressions": 156017,
       "avg_position": 4.36,
-      "potential": 30810
+      "potential": 30749
     },
     {
       "slug": "favicon-icon",
@@ -231,23 +241,6 @@
       "potential": 2561
     },
     {
-      "slug": "icon-maker",
-      "primary_keyword": "icon maker",
-      "intent": "transactional",
-      "file": "icon-maker.html",
-      "source": "lexical",
-      "content_source": "template",
-      "title": "Icon Maker | Icons8",
-      "queries": [
-        "icon maker",
-        "icon maker online"
-      ],
-      "clicks": 892,
-      "impressions": 8007,
-      "avg_position": 5.2,
-      "potential": 2522
-    },
-    {
       "slug": "desktop-icons",
       "primary_keyword": "desktop icons",
       "intent": "transactional",
@@ -282,11 +275,39 @@
       "impressions": 14346,
       "avg_position": 3.98,
       "potential": 2004
+    },
+    {
+      "slug": "ai-icon",
+      "primary_keyword": "ai icon",
+      "intent": "transactional",
+      "file": "ai-icon.html",
+      "source": "lexical",
+      "content_source": "template",
+      "title": "AI Icon | Icons8",
+      "queries": [
+        "ai icon",
+        "ai icons"
+      ],
+      "clicks": 534,
+      "impressions": 20353,
+      "avg_position": 3.62,
+      "potential": 1790
     }
   ],
-  "llm_usage": [],
+  "llm_usage": [
+    {
+      "stage": "classify",
+      "model": "qwen/qwen3.5-flash-02-23",
+      "calls": 2,
+      "cache_hits": 0,
+      "input_tokens": 3530,
+      "output_tokens": 4590,
+      "reasoning_tokens": 0,
+      "seconds": 24.0
+    }
+  ],
   "warnings": [
-    "12 лексических групп не вошли в набор из 10 страниц",
-    "классификация и кластеризация выполнены правилами — LLM ещё не подключена"
+    "возвращены варианты написания оставленных запросов: freeicon",
+    "10 лексических групп не вошли в набор из 10 страниц"
   ]
 }

@@ -10,7 +10,11 @@ import logging
 import sys
 
 from ..domain.models import Cluster, Decision, LexicalGroup, Query
+from ..env import load_dotenv
 from ..ingest.loader import InputError, LoadResult, load_export
+from ..llm.cache import ResponseCache
+from ..llm.client import LLMClient, LLMConfig
+from ..pipeline import classify as classify_module
 from ..pipeline import cluster as cluster_module
 from ..pipeline import content as content_module
 from ..pipeline import filters, normalize
@@ -37,6 +41,7 @@ def main(argv: list[str] | None = None) -> int:
         return EXIT_INPUT_ERROR
 
     _setup_logging(options.log_level)
+    load_dotenv()
     report = RunReport()
 
     try:
@@ -60,12 +65,30 @@ def main(argv: list[str] | None = None) -> int:
             f"остальные {len(truncated)} не рассматривались"
         )
 
+    client = LLMClient(
+        config=LLMConfig.from_env(options.settings),
+        cache=ResponseCache(enabled=options.use_cache),
+    )
+    use_llm = options.use_llm and client.available
+    if options.use_llm and not client.available:
+        report.warn("не задан LLM_API_KEY — прогон выполнен без модели")
+
+    # Грубые маркеры чужих брендов нужны только там, где модели не будет:
+    # с моделью решение принимает она, а не список слов из конфига.
     policy = filters.FilterPolicy.from_settings(
         options.settings,
         keep_brand=options.keep_brand,
         keep_third_party=options.keep_third_party,
+        use_offline_markers=not use_llm,
     )
     decisions = filters.apply(queries, policy)
+
+    if use_llm:
+        classified = classify_module.classify(decisions, client, options.settings)
+        decisions = classified.decisions
+        for warning in classified.warnings:
+            report.warn(warning)
+        use_llm = classified.used_llm
     kept = [decision.query for decision in decisions if decision.keep]
     if not kept:
         print("После фильтров не осталось ни одного запроса.", file=sys.stderr)
@@ -103,14 +126,16 @@ def main(argv: list[str] | None = None) -> int:
         **describe_queries(queries),
     }
     report.mode = {
-        "llm": False,
+        "llm": use_llm,
         "stage": "render",
         "keep_brand": options.keep_brand,
         "keep_third_party": options.keep_third_party,
         "config": str(options.settings.path) if options.settings.path else None,
     }
-    report.warn("классификация и кластеризация выполнены правилами — LLM ещё не подключена")
+    if not use_llm:
+        report.warn("классификация выполнена правилами и офлайн-маркерами, без модели")
     report.add_filter_stats(decisions)
+    report.llm_usage = [usage.as_dict() for usage in client.usage.values()]
     report.clusters = [_describe_cluster(item) for item in clusters]
 
     excluded_path = options.out_dir / "excluded.csv"
@@ -134,6 +159,7 @@ def main(argv: list[str] | None = None) -> int:
     _print_filter_summary(report, decisions)
     _print_clusters(clusters)
     _print_groups(groups)
+    _print_llm_usage(report, client)
     _print_warnings(report.warnings)
     print(f"\nСтраниц собрано: {len(written) - 1} + хаб → {options.out_dir}/index.html")
     print(f"Отчёт: {report_path}")
@@ -248,6 +274,20 @@ def _print_groups(groups: list[LexicalGroup]) -> None:
         if len(group.queries) > 4:
             variants += f", … (+{len(group.queries) - 4})"
         print(f"  {_clip(group.key, 26):<26} потенциал {group.potential:>10,.0f}  ← {variants}")
+
+
+def _print_llm_usage(report: RunReport, client: LLMClient) -> None:
+    if not report.llm_usage:
+        return
+    print("\nРасход модели:")
+    for usage in report.llm_usage:
+        print(
+            f"  {usage['stage']:<10} {usage['model']:<24} вызовов {usage['calls']}"
+            f" (из кэша {usage['cache_hits']}), токенов вход {usage['input_tokens']},"
+            f" выход {usage['output_tokens']}"
+            + (f" (рассуждения {usage['reasoning_tokens']})" if usage["reasoning_tokens"] else "")
+            + f", {usage['seconds']} c"
+        )
 
 
 def _print_warnings(warnings: list[str]) -> None:

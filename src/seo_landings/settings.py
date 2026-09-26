@@ -6,6 +6,7 @@ Python 3.11+, то есть на чужой машине для запуска �
 даже с потерянным файлом настроек.
 """
 
+import os
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
@@ -70,4 +71,21 @@ def load_settings(path: str | Path | None = None) -> Settings:
         else:
             merged[section] = values
 
+    _apply_env_overrides(merged)
     return Settings(data=merged, path=source)
+
+
+#: Переменные окружения, перекрывающие значения конфига.
+ENV_OVERRIDES = {
+    "LLM_MODEL_CLASSIFY": ("models", "classify"),
+    "LLM_MODEL_CLUSTER": ("models", "cluster"),
+    "LLM_MODEL_CONTENT": ("models", "content"),
+}
+
+
+def _apply_env_overrides(data: dict[str, Any]) -> None:
+    """Окружение сильнее файла: подменить модель на один прогон — норма."""
+    for variable, (section, key) in ENV_OVERRIDES.items():
+        value = os.environ.get(variable)
+        if value:
+            data.setdefault(section, {})[key] = value

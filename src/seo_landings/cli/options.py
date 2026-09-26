@@ -24,6 +24,8 @@ class Options:
     tolerance: int
     keep_brand: bool
     keep_third_party: bool
+    use_llm: bool
+    use_cache: bool
     log_level: str
 
 
@@ -48,6 +50,10 @@ def build_parser() -> argparse.ArgumentParser:
                         help="не отбрасывать запросы своего бренда")
     parser.add_argument("--keep-third-party", action="store_true",
                         help="не отбрасывать чужие бренды и связанные с ними символы")
+    parser.add_argument("--no-llm", action="store_true",
+                        help="офлайн-режим: правила и шаблоны, без обращения к модели")
+    parser.add_argument("--no-cache", action="store_true",
+                        help="игнорировать сохранённые ответы модели")
     parser.add_argument("--log-level", default="INFO",
                         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
                         help="подробность вывода (по умолчанию: INFO)")
@@ -66,6 +72,8 @@ def resolve(argv: list[str] | None = None) -> Options:
         max_queries=_first(args.max_queries, settings.get("input.max_queries"), 500),
         target_pages=_first(args.target_pages, settings.get("pages.target"), 10),
         tolerance=_first(args.tolerance, settings.get("pages.tolerance"), 2),
+        use_llm=not args.no_llm,
+        use_cache=not args.no_cache,
         keep_brand=args.keep_brand,
         keep_third_party=args.keep_third_party,
         log_level=args.log_level,
