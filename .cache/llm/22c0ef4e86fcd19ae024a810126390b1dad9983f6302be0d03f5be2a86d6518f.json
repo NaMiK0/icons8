@@ -1,0 +1,52 @@
+{
+  "title": "Icons for Apps and Websites | Icons8",
+  "meta_description": "Browse thousands of icons in multiple styles. Choose the right format like SVG or PNG for your project and check the license details.",
+  "h1": "Icons for Design Projects",
+  "intro": "Select from a wide range of icon styles to match your interface needs. You can filter by visual style, color, and file format to find the exact asset required for your work.",
+  "sections": [
+    {
+      "heading": "Choose Your Visual Style",
+      "paragraphs": [
+        "Icons come in various artistic approaches, from flat and line art to 3D and hand-drawn looks. Pick a style that aligns with your brand identity and the tone of your application.",
+        "Consistency matters when building an interface, so select a single style family to ensure all elements look cohesive together."
+      ]
+    },
+    {
+      "heading": "File Formats and Sizes",
+      "paragraphs": [
+        "Assets are available in vector formats like SVG for scalable graphics and raster formats like PNG for fixed-size images. Vectors allow you to resize without losing quality, while PNGs are ready for immediate use at specific dimensions.",
+        "Check the available sizes listed for each item to ensure they meet your resolution requirements before downloading."
+      ]
+    },
+    {
+      "heading": "Usage and Licensing",
+      "paragraphs": [
+        "Every icon includes specific usage terms that define how it can be used in personal or commercial projects. Some assets may require attribution, while others offer broader rights depending on your account status.",
+        "Review the license information displayed next to each icon to confirm it fits your project's legal requirements."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is the best format for app icons?",
+      "answer": "SVG files are ideal for scalability across different screen sizes, while PNG is better for fixed-resolution displays."
+    },
+    {
+      "question": "Can I use these icons for free?",
+      "answer": "Availability depends on the specific asset; check the license details shown with each icon to see if attribution or a subscription is needed."
+    },
+    {
+      "question": "How do I change the color of an icon?",
+      "answer": "Vector formats like SVG allow you to edit colors directly in design software, whereas PNG files usually require external editing tools."
+    },
+    {
+      "question": "Are there icons for specific industries?",
+      "answer": "Yes, collections cover topics ranging from technology and finance to healthcare and education to suit various sectors."
+    },
+    {
+      "question": "Do I need to create an account to download?",
+      "answer": "Access requirements vary by asset type; some downloads may be immediate while others require signing in to verify your license."
+    }
+  ],
+  "anchor_text": "browse icon collection"
+}

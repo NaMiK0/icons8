@@ -1,0 +1,354 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Generic high-volume term for catalog assets"
+    },
+    {
+      "id": 2,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Singular generic term for catalog assets"
+    },
+    {
+      "id": 3,
+      "keep": false,
+      "reason": "third_party_brand",
+      "intent": "informational",
+      "note": "Targets Instagram trademark and verification symbol"
+    },
+    {
+      "id": 4,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "informational",
+      "note": "Request for fake social media verification tool"
+    },
+    {
+      "id": 5,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific design asset category request"
+    },
+    {
+      "id": 6,
+      "keep": false,
+      "reason": "third_party_brand",
+      "intent": "navigational",
+      "note": "Query targets PhonePe brand specifically"
+    },
+    {
+      "id": 7,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "High intent generic term with modifier"
+    },
+    {
+      "id": 8,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "High intent generic term with modifier"
+    },
+    {
+      "id": 9,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Emoji is a valid design asset type"
+    },
+    {
+      "id": 10,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Variation of generic free icon search"
+    },
+    {
+      "id": 11,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Variation of generic free icon search"
+    },
+    {
+      "id": 12,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for icons"
+    },
+    {
+      "id": 13,
+      "keep": false,
+      "reason": "third_party_brand",
+      "intent": "navigational",
+      "note": "Query targets Shazam brand specifically"
+    },
+    {
+      "id": 14,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "informational",
+      "note": "Request for hacking tool or injector"
+    },
+    {
+      "id": 15,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Format specific asset request"
+    },
+    {
+      "id": 16,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for free icons"
+    },
+    {
+      "id": 17,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Format specific asset request"
+    },
+    {
+      "id": 18,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for free icons"
+    },
+    {
+      "id": 19,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "informational",
+      "note": "User wants to create icons, not download them"
+    },
+    {
+      "id": 20,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Format specific asset request"
+    },
+    {
+      "id": 21,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific design asset category request"
+    },
+    {
+      "id": 22,
+      "keep": false,
+      "reason": "third_party_brand",
+      "intent": "navigational",
+      "note": "Query targets Shein brand specifically"
+    },
+    {
+      "id": 23,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for custom cursors"
+    },
+    {
+      "id": 24,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for icons"
+    },
+    {
+      "id": 25,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Plural variation of custom cursor request"
+    },
+    {
+      "id": 26,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific design asset category request"
+    },
+    {
+      "id": 27,
+      "keep": false,
+      "reason": "third_party_brand",
+      "intent": "navigational",
+      "note": "Query targets Instagram logo trademark"
+    },
+    {
+      "id": 28,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for custom cursors"
+    },
+    {
+      "id": 29,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Bundle format asset request"
+    },
+    {
+      "id": 30,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "OS specific asset category request"
+    },
+    {
+      "id": 31,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for free icons"
+    },
+    {
+      "id": 32,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for free icons"
+    },
+    {
+      "id": 33,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "AI generated style asset request"
+    },
+    {
+      "id": 34,
+      "keep": false,
+      "reason": "third_party_brand",
+      "intent": "navigational",
+      "note": "Query targets Apple logo trademark"
+    },
+    {
+      "id": 35,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Format specific asset request"
+    },
+    {
+      "id": 36,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "informational",
+      "note": "Implies discovery or comparison rather than download"
+    },
+    {
+      "id": 37,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Format specific asset request"
+    },
+    {
+      "id": 38,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Format specific asset request"
+    },
+    {
+      "id": 39,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Synonym variation for custom cursor"
+    },
+    {
+      "id": 40,
+      "keep": false,
+      "reason": "third_party_brand",
+      "intent": "informational",
+      "note": "Targets verification badge symbols generally"
+    },
+    {
+      "id": 41,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "OS specific asset category request"
+    },
+    {
+      "id": 42,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific UI element asset request"
+    },
+    {
+      "id": 43,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific UI element asset request"
+    },
+    {
+      "id": 44,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "OS specific asset category request"
+    },
+    {
+      "id": 45,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "informational",
+      "note": "User wants to create icons, not download them"
+    },
+    {
+      "id": 46,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "informational",
+      "note": "Refers to software tool, not an asset"
+    },
+    {
+      "id": 47,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific UI element asset request"
+    },
+    {
+      "id": 48,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear download intent for free icons"
+    },
+    {
+      "id": 49,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Format specific asset request"
+    },
+    {
+      "id": 50,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific web asset category request"
+    }
+  ]
+}

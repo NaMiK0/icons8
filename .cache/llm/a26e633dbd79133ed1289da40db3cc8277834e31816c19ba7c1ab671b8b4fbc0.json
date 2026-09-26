@@ -1,0 +1,56 @@
+{
+  "title": "Favicon Icon: Download and Create | Icons8",
+  "meta_description": "Find and download favicon icons in multiple sizes. Choose from various styles to create a recognizable browser tab for your website.",
+  "h1": "Favicon Icon Collection",
+  "intro": "A favicon icon appears in the browser tab next to the page title, helping visitors identify your site quickly. This collection offers ready-to-use graphics in standard formats like .ico, .png, and .svg to fit different browser requirements.",
+  "sections": [
+    {
+      "heading": "File Formats and Sizes",
+      "paragraphs": [
+        "Browsers require specific file types to display favicons correctly. The .ico format is the traditional standard, while modern browsers also support .png and .svg files for sharper rendering on high-resolution screens.",
+        "Select the size that matches your needs, ranging from small 16x16 pixels for tabs to larger versions for mobile home screens or app shortcuts."
+      ]
+    },
+    {
+      "heading": "Style Options",
+      "paragraphs": [
+        "Choose a visual style that aligns with your brand identity, such as flat, line, or filled designs. Simple shapes often work best at small sizes to ensure the icon remains clear when scaled down.",
+        "Consider how the color palette will look against both light and dark browser themes to maintain visibility across different user settings."
+      ]
+    },
+    {
+      "heading": "Implementation Steps",
+      "paragraphs": [
+        "After selecting an image, save it with the filename favicon.ico if using the legacy format. Place the file in the root directory of your website so search engines and browsers can locate it automatically.",
+        "For custom implementations, link the file in the HTML head section using the appropriate tag attributes for the chosen format."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "How do I download a favicon?",
+      "answer": "Select the desired icon style and size, then click the download button to save the file to your device."
+    },
+    {
+      "question": "What is the best size for a favicon?",
+      "answer": "Standard favicons are 16x16 pixels, but providing multiple sizes up to 512x512 ensures compatibility with all devices and browsers."
+    },
+    {
+      "question": "Can I use these favicons for free?",
+      "answer": "Check the license details listed with each asset to confirm usage rights and attribution requirements before downloading."
+    },
+    {
+      "question": "Do I need a favicon.ico file?",
+      "answer": "While .ico is the most widely supported format, many modern browsers now accept .png and .svg files as well."
+    },
+    {
+      "question": "Where should I place my favicon file?",
+      "answer": "Upload the file to the root folder of your website domain so it loads automatically without needing a specific path."
+    },
+    {
+      "question": "Are there free favicons available?",
+      "answer": "The library includes options with varying licensing terms; review the specific conditions for each item to see if it fits your budget."
+    }
+  ],
+  "anchor_text": "download favicon icon"
+}

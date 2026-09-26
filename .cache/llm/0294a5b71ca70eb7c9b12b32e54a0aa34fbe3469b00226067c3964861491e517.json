@@ -1,0 +1,49 @@
+{
+  "title": "Icon SVG: Scalable Vector Graphics for Design | Icons8",
+  "meta_description": "Find icon SVG files for web and print. Choose from various styles and sizes that scale without losing quality. Check licenses for each asset.",
+  "h1": "Icon SVG Files for Web and Print",
+  "intro": "Scalable Vector Graphics (SVG) allow icons to resize to any dimension without pixelation. This format is ideal for responsive web design and high-resolution print materials. Select the style and color that match your project requirements.",
+  "sections": [
+    {
+      "heading": "Why Choose SVG Format",
+      "paragraphs": [
+        "SVG files use mathematical paths instead of pixels, ensuring crisp edges at any size. This makes them lighter than raster images and easier to manipulate with code. They are the standard choice for modern websites and mobile applications."
+      ]
+    },
+    {
+      "heading": "Style and Color Options",
+      "paragraphs": [
+        "Icons are available in multiple visual styles, from flat and line art to 3D and hand-drawn looks. You can often adjust the color directly within the file or choose from preset palettes. Pick a style that aligns with your brand identity before downloading."
+      ]
+    },
+    {
+      "heading": "Usage in Web and Print",
+      "paragraphs": [
+        "Web developers embed SVG code directly into HTML or use it as an image source. Designers import these files into layout software for brochures and posters. The vector nature ensures the icon remains sharp whether it is a small button or a large banner."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is an icon SVG file?",
+      "answer": "An icon SVG is a vector image format that scales to any size without losing quality, making it perfect for screens and print."
+    },
+    {
+      "question": "Can I use icon SVG files for commercial projects?",
+      "answer": "Check the license displayed with each specific icon to confirm if commercial use is permitted and if attribution is required."
+    },
+    {
+      "question": "How do I change the color of an SVG icon?",
+      "answer": "Most SVG files allow color changes by editing the fill or stroke properties in a vector editor or directly in the code."
+    },
+    {
+      "question": "Are icon SVG files compatible with all browsers?",
+      "answer": "Yes, modern web browsers support SVG natively, allowing icons to render sharply on all devices."
+    },
+    {
+      "question": "Do I need to convert icon SVG to PNG?",
+      "answer": "Conversion is only necessary if you are working in a tool that does not support vector formats or need a fixed-size raster image."
+    }
+  ],
+  "anchor_text": "download icon svg"
+}

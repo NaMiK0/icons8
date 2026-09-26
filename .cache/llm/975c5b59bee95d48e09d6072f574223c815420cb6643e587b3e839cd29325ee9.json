@@ -1,0 +1,125 @@
+{
+  "clusters": [
+    {
+      "primary_keyword": "icons",
+      "slug": "icons",
+      "intent": "transactional",
+      "group_keys": [
+        "icon",
+        "icon-svg",
+        "icon-png",
+        "icon-pack",
+        "icon-website",
+        "icon-ppt",
+        "icon-mac",
+        "desktop-icon",
+        "folder-icon",
+        "ai-icon",
+        "cursor-icon"
+      ],
+      "rationale": "General icon search across formats, platforms, and specific use cases."
+    },
+    {
+      "primary_keyword": "free icons",
+      "slug": "free-icons",
+      "intent": "transactional",
+      "group_keys": [
+        "free-icon",
+        "free-svg",
+        "free-icon-svg",
+        "download-free-icon",
+        "free-icon-png",
+        "download-free-icon-svg",
+        "download-free-icon-pc"
+      ],
+      "rationale": "Users specifically seeking free icon assets in various formats."
+    },
+    {
+      "primary_keyword": "custom cursor",
+      "slug": "custom-cursor",
+      "intent": "transactional",
+      "group_keys": [
+        "cursor-custom",
+        "cursor-custom-mouse",
+        "cursor-custom-window",
+        "cursor-custom-download",
+        "custom-mouse-pointer",
+        "crosshair-cursor",
+        "cursor-dot",
+        "cursor-custom-mac",
+        "android-cursor-custom"
+      ],
+      "rationale": "Users seeking to download or create custom mouse pointers and cursors."
+    },
+    {
+      "primary_keyword": "favicon icon",
+      "slug": "favicon-icon",
+      "intent": "transactional",
+      "group_keys": [
+        "favicon-icon",
+        "favicon",
+        "download-favicon",
+        "favicon-free"
+      ],
+      "rationale": "Specific need for website favicons, including free and downloadable options."
+    },
+    {
+      "primary_keyword": "icon download",
+      "slug": "icon-download",
+      "intent": "transactional",
+      "group_keys": [
+        "download-icon",
+        "download-icon-pack",
+        "desktop-download-icon",
+        "cursor-download"
+      ],
+      "rationale": "Action-oriented queries focused on downloading icon packs or specific assets."
+    },
+    {
+      "primary_keyword": "custom icons",
+      "slug": "custom-icons",
+      "intent": "transactional",
+      "group_keys": [
+        "custom-icon"
+      ],
+      "rationale": "Users looking for bespoke or customizable icon designs."
+    },
+    {
+      "primary_keyword": "gun emoji",
+      "slug": "gun-emoji",
+      "intent": "informational",
+      "group_keys": [
+        "emoji-gun"
+      ],
+      "rationale": "Specific search for a single emoji graphic or representation."
+    },
+    {
+      "primary_keyword": "icon pack for windows 11",
+      "slug": "icon-pack-for-windows-11",
+      "intent": "transactional",
+      "group_keys": [
+        "11-icon-pack-window"
+      ],
+      "rationale": "Highly specific need for OS-themed icon packs for Windows 11."
+    },
+    {
+      "primary_keyword": "cursors",
+      "slug": "cursors",
+      "intent": "informational",
+      "group_keys": [
+        "cursor"
+      ],
+      "rationale": "Broad informational search for cursor types or general cursor content."
+    },
+    {
+      "primary_keyword": "free icons download",
+      "slug": "free-icons-download",
+      "intent": "transactional",
+      "group_keys": [
+        "download-free-icon"
+      ],
+      "rationale": "Redundant with free icons cluster but distinct high-volume download intent."
+    }
+  ],
+  "unassigned": []
+}

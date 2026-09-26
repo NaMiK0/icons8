@@ -1,0 +1,263 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Clear intent to download free PNG icons."
+    },
+    {
+      "id": 2,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Direct request for downloading free icons."
+    },
+    {
+      "id": 3,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific asset type requested for download."
+    },
+    {
+      "id": 4,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "User wants free SVG format icons."
+    },
+    {
+      "id": 5,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Platform qualifier does not change catalog intent."
+    },
+    {
+      "id": 6,
+      "keep": false,
+      "reason": "third_party_brand",
+      "intent": "navigational",
+      "note": "Query targets a specific competitor brand name."
+    },
+    {
+      "id": 7,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific cursor style requested as an asset."
+    },
+    {
+      "id": 8,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Generic plural term for favicon assets."
+    },
+    {
+      "id": 9,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Combination of terms clearly seeking favicons."
+    },
+    {
+      "id": 10,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Direct request for free favicon assets."
+    },
+    {
+      "id": 11,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Standard variation of icon search query."
+    },
+    {
+      "id": 12,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "User wants to download a collection of icons."
+    },
+    {
+      "id": 13,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "informational",
+      "note": "Trend round-up belongs in a blog post."
+    },
+    {
+      "id": 14,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Device qualifier does not negate asset intent."
+    },
+    {
+      "id": 15,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Simple request for free SVG icon files."
+    },
+    {
+      "id": 16,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Generic term for cursor icon assets."
+    },
+    {
+      "id": 17,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "User seeks custom designed icon assets."
+    },
+    {
+      "id": 18,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Desktop icons are valid design assets."
+    },
+    {
+      "id": 19,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Broad category term for cursor assets."
+    },
+    {
+      "id": 20,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "OS qualifier does not change catalog intent."
+    },
+    {
+      "id": 21,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Misspelling still indicates real demand for cursors."
+    },
+    {
+      "id": 22,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Synonym for cursor icons is acceptable."
+    },
+    {
+      "id": 23,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Generic term for desktop interface icons."
+    },
+    {
+      "id": 24,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Technical file extension query for favicons."
+    },
+    {
+      "id": 25,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Specific visual style requested for cursors."
+    },
+    {
+      "id": 26,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Standard variation of icon search query."
+    },
+    {
+      "id": 27,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Use case qualifier does not negate asset intent."
+    },
+    {
+      "id": 28,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Use case qualifier does not negate asset intent."
+    },
+    {
+      "id": 29,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Style qualifier does not negate asset intent."
+    },
+    {
+      "id": 30,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "transactional",
+      "note": "Tool request rather than asset download."
+    },
+    {
+      "id": 31,
+      "keep": false,
+      "reason": "not_a_landing_intent",
+      "intent": "transactional",
+      "note": "Tool request rather than asset download."
+    },
+    {
+      "id": 32,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Topic-based keyword for AI-themed icons."
+    },
+    {
+      "id": 33,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "File extension query for icon downloads."
+    },
+    {
+      "id": 34,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Direct request for free favicon assets."
+    },
+    {
+      "id": 35,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Use case qualifier does not negate asset intent."
+    },
+    {
+      "id": 36,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Long-tail variation of standard icon search."
+    },
+    {
+      "id": 37,
+      "keep": true,
+      "reason": "ok",
+      "intent": "transactional",
+      "note": "Direct request for free favicon assets."
+    }
+  ]
+}

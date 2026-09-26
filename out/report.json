@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T06:36:19+00:00",
+  "generated_at": "2026-09-26T07:36:03+00:00",
   "input": {
     "path": "data/gsc_queries.csv",
     "encoding": "utf-8-sig",
@@ -23,18 +23,34 @@
   },
   "mode": {
     "llm": true,
-    "stage": "render",
+    "clustering": "llm",
+    "content": "llm",
+    "models": {
+      "classify": [
+        "qwen/qwen3.5-flash-02-23",
+        "qwen/qwen3.5-27b"
+      ],
+      "cluster": [
+        "qwen/qwen3.5-27b",
+        "qwen/qwen3.5-flash-02-23"
+      ],
+      "content": [
+        "qwen/qwen3.5-27b",
+        "qwen/qwen3.5-flash-02-23"
+      ]
+    },
     "keep_brand": false,
     "keep_third_party": false,
+    "show_metrics": true,
     "config": "config/config.toml"
   },
   "filters": {
-    "kept": 71,
-    "dropped": 29,
-    "kept_clicks": 61592,
-    "dropped_clicks": 68001,
-    "kept_potential": 331777,
-    "dropped_potential": 143671,
+    "kept": 60,
+    "dropped": 40,
+    "kept_clicks": 57282,
+    "dropped_clicks": 72311,
+    "kept_potential": 314709,
+    "dropped_potential": 160739,
     "by_reason": {
       "own_brand": {
         "queries": 12,
@@ -45,6 +61,17 @@
           "icons8",
           "icon8",
           "icons 8"
+        ]
+      },
+      "unclustered": {
+        "queries": 11,
+        "clicks": 4310,
+        "potential": 17068,
+        "label": "did not make the target number of pages",
+        "examples": [
+          "gun emoji",
+          "custom icons",
+          "icon pack"
         ]
       },
       "not_a_landing_intent": {
@@ -88,11 +115,10 @@
       "file": "custom-cursor.html",
       "source": "llm",
       "content_source": "llm",
-      "title": "Custom Cursor: Download Mouse Pointers for Windows and Mac",
+      "title": "Custom Cursor: Download Mouse Pointers for Windows & Mac",
       "queries": [
         "custom cursor",
         "cursor custom",
-        "cursor download",
         "custom cursors",
         "custom cursor download",
         "custom mouse cursor",
@@ -100,39 +126,88 @@
         "custom cursor for mac",
         "dot cursor",
         "custom cursor for android",
-        "cursor icon",
-        "cursors",
         "custom curser",
         "custom mouse pointer",
         "crosshair cursor"
       ],
-      "clicks": 9485,
-      "impressions": 417273,
-      "avg_position": 5.78,
-      "potential": 165297
+      "clicks": 8568,
+      "impressions": 375982,
+      "avg_position": 5.44,
+      "potential": 131360
     },
     {
       "slug": "icons",
       "primary_keyword": "icons",
-      "intent": "informational",
+      "intent": "transactional",
       "file": "icons.html",
       "source": "llm",
       "content_source": "llm",
-      "title": "Icons: Styles, Formats and Sizes for Design | Icons8",
+      "title": "Icons for Apps and Websites | Icons8",
       "queries": [
         "icons",
-        "icon",
+        "icon"
+      ],
+      "clicks": 23715,
+      "impressions": 372648,
+      "avg_position": 4.58,
+      "potential": 84288
+    },
+    {
+      "slug": "icon-download",
+      "primary_keyword": "icon download",
+      "intent": "transactional",
+      "file": "icon-download.html",
+      "source": "llm",
+      "content_source": "llm",
+      "title": "Icon Download: PNG, SVG, ICO & Cursor Files | Icons8",
+      "queries": [
         "icon download",
+        "cursor download",
         "icons download",
-        "icon pack",
         "icon pack download",
         "desktop icon download",
         "ico download"
       ],
-      "clicks": 26888,
-      "impressions": 396546,
-      "avg_position": 4.56,
-      "potential": 88829
+      "clicks": 3363,
+      "impressions": 48835,
+      "avg_position": 7.36,
+      "potential": 30827
+    },
+    {
+      "slug": "free-icons",
+      "primary_keyword": "free icons",
+      "intent": "transactional",
+      "file": "free-icons.html",
+      "source": "llm",
+      "content_source": "llm",
+      "title": "Free Icons for Web and App Design | Icons8",
+      "queries": [
+        "free icons",
+        "free icon",
+        "icon free",
+        "icons free",
+        "free icons download",
+        "free svg icons",
+        "free icon download",
+        "free svg",
+        "icons free download",
+        "icon free download",
+        "icons download free",
+        "free icons png",
+        "free png icons",
+        "download free icons",
+        "free icons svg",
+        "free icons download for pc",
+        "freeicon",
+        "icon svg free",
+        "free svg icon",
+        "icon png free",
+        "free svg icons download"
+      ],
+      "clicks": 16662,
+      "impressions": 156017,
+      "avg_position": 4.36,
+      "potential": 30749
     },
     {
       "slug": "favicon-icon",
@@ -158,115 +233,21 @@
       "potential": 26031
     },
     {
-      "slug": "free-icons",
-      "primary_keyword": "free icons",
+      "slug": "icon-svg",
+      "primary_keyword": "icon svg",
       "intent": "transactional",
-      "file": "free-icons.html",
+      "file": "icon-svg.html",
       "source": "llm",
       "content_source": "llm",
-      "title": "Free Icons: Download PNG and Vector Graphics | Icons8",
+      "title": "Icon SVG: Scalable Vector Graphics for Design | Icons8",
       "queries": [
-        "free icons",
-        "free icon",
-        "icon free",
-        "icons free",
-        "free icons download",
-        "free icon download",
-        "icons free download",
-        "icon free download",
-        "icons download free",
-        "free icons png",
-        "free png icons",
-        "download free icons",
-        "free icons download for pc",
-        "freeicon",
-        "icon png free",
-        "free svg icons download"
-      ],
-      "clicks": 14497,
-      "impressions": 126899,
-      "avg_position": 4.16,
-      "potential": 21310
-    },
-    {
-      "slug": "free-svg-icons",
-      "primary_keyword": "free svg icons",
-      "intent": "transactional",
-      "file": "free-svg-icons.html",
-      "source": "llm",
-      "content_source": "llm",
-      "title": "Free SVG Icons for Web and App Design | Icons8",
-      "queries": [
-        "free svg icons",
-        "free svg",
         "icon svg",
-        "icons svg",
-        "free icons svg",
-        "icon svg free",
-        "free svg icon"
+        "icons svg"
       ],
-      "clicks": 2849,
-      "impressions": 39253,
-      "avg_position": 5.19,
-      "potential": 12287
-    },
-    {
-      "slug": "app-icons",
-      "primary_keyword": "app icons",
-      "intent": "transactional",
-      "file": "app-icons.html",
-      "source": "llm",
-      "content_source": "llm",
-      "title": "App Icons for Windows 11 and Mac | Icons8",
-      "queries": [
-        "app icons",
-        "icon pack for windows 11",
-        "mac icons"
-      ],
-      "clicks": 454,
-      "impressions": 11079,
-      "avg_position": 7.44,
-      "potential": 7025
-    },
-    {
-      "slug": "folder-icons",
-      "primary_keyword": "folder icons",
-      "intent": "transactional",
-      "file": "folder-icons.html",
-      "source": "llm",
-      "content_source": "llm",
-      "title": "Folder Icons, AI Icons & Gun Emojis | Icons8",
-      "queries": [
-        "gun emoji",
-        "ai icon",
-        "folder icons",
-        "folder icon",
-        "ai icons"
-      ],
-      "clicks": 3230,
-      "impressions": 58172,
-      "avg_position": 3.54,
-      "potential": 4464
-    },
-    {
-      "slug": "icons-for-website",
-      "primary_keyword": "icons for website",
-      "intent": "informational",
-      "file": "icons-for-website.html",
-      "source": "llm",
-      "content_source": "llm",
-      "title": "Icons for Website and Desktop | Icons8",
-      "queries": [
-        "desktop icons",
-        "desktop icon",
-        "icons for ppt",
-        "icons for website",
-        "icons for desktop"
-      ],
-      "clicks": 902,
-      "impressions": 8665,
-      "avg_position": 5.18,
-      "potential": 2697
+      "clicks": 684,
+      "impressions": 10135,
+      "avg_position": 4.97,
+      "potential": 2848
     },
     {
       "slug": "icon-png",
@@ -275,7 +256,7 @@
       "file": "icon-png.html",
       "source": "llm",
       "content_source": "llm",
-      "title": "Icon PNG: Download Transparent Background Graphics | Icons8",
+      "title": "Icon PNG: Transparent Backgrounds for Design | Icons8",
       "queries": [
         "icon png",
         "icons png"
@@ -286,63 +267,107 @@
       "potential": 2561
     },
     {
-      "slug": "custom-icons",
-      "primary_keyword": "custom icons",
+      "slug": "desktop-icons",
+      "primary_keyword": "desktop icons",
       "intent": "transactional",
-      "file": "custom-icons.html",
+      "file": "desktop-icons.html",
       "source": "llm",
       "content_source": "llm",
-      "title": "Custom Icons for Your Brand | Icons8",
+      "title": "Desktop Icons for Windows and Mac | Icons8",
       "queries": [
-        "custom icons",
-        "custom icon"
+        "desktop icons",
+        "desktop icon",
+        "icons for desktop"
       ],
-      "clicks": 694,
-      "impressions": 3657,
-      "avg_position": 5.44,
-      "potential": 1276
+      "clicks": 689,
+      "impressions": 6216,
+      "avg_position": 5.54,
+      "potential": 2251
+    },
+    {
+      "slug": "folder-icons",
+      "primary_keyword": "folder icons",
+      "intent": "transactional",
+      "file": "folder-icons.html",
+      "source": "llm",
+      "content_source": "llm",
+      "title": "Folder Icons: Styles, Sizes & Formats | Icons8",
+      "queries": [
+        "folder icons",
+        "folder icon"
+      ],
+      "clicks": 474,
+      "impressions": 14346,
+      "avg_position": 3.98,
+      "potential": 2004
+    },
+    {
+      "slug": "ai-icon",
+      "primary_keyword": "ai icon",
+      "intent": "transactional",
+      "file": "ai-icon.html",
+      "source": "llm",
+      "content_source": "llm",
+      "title": "AI Icon: Download Vector and PNG Graphics | Icons8",
+      "queries": [
+        "ai icon",
+        "ai icons"
+      ],
+      "clicks": 534,
+      "impressions": 20353,
+      "avg_position": 3.62,
+      "potential": 1790
     }
   ],
   "llm_usage": [
     {
       "stage": "classify",
       "model": "qwen/qwen3.5-flash-02-23",
-      "calls": 2,
-      "cache_hits": 0,
-      "input_tokens": 3530,
-      "output_tokens": 4627,
+      "calls": 0,
+      "cache_hits": 2,
+      "input_tokens": 0,
+      "output_tokens": 0,
       "reasoning_tokens": 0,
-      "seconds": 23.6
+      "seconds": 0.0
     },
     {
       "stage": "cluster",
       "model": "qwen/qwen3.5-27b",
-      "calls": 1,
-      "cache_hits": 0,
-      "input_tokens": 2053,
-      "output_tokens": 936,
+      "calls": 0,
+      "cache_hits": 1,
+      "input_tokens": 0,
+      "output_tokens": 0,
       "reasoning_tokens": 0,
-      "seconds": 12.1
+      "seconds": 0.0
     },
     {
       "stage": "content",
       "model": "qwen/qwen3.5-27b",
-      "calls": 12,
+      "calls": 13,
       "cache_hits": 0,
-      "input_tokens": 11082,
-      "output_tokens": 6453,
+      "input_tokens": 11439,
+      "output_tokens": 6502,
       "reasoning_tokens": 0,
-      "seconds": 124.1
+      "seconds": 130.9
     }
   ],
   "warnings": [
     "возвращены варианты написания оставленных запросов: freeicon",
-    "custom-cursor: title обрезан с 67 символов",
-    "icons: утверждения о лицензиях, доступе или составе каталога (1) — проверьте перед публикацией: Availability varies by asset; always check the license information displayed with each icon to understand usage rights and attribution requirements.",
-    "favicon-icon: утверждения о лицензиях, доступе или составе каталога (2) — проверьте перед публикацией: Check the license details shown with the asset to confirm how you can use it. | Many icons are available for download, but you must check the specific license terms listed with each asset to see if attribution or a paid plan is required.",
-    "free-icons: утверждения о лицензиях, доступе или составе каталога (4) — проверьте перед публикацией: Once you have selected an icon, review the license information provided on the asset page. | This tells you if attribution is required or if there are restrictions on commercial use.",
-    "free-svg-icons: утверждения о лицензиях, доступе или составе каталога (3) — проверьте перед публикацией: Do I need an account to download free SVG icons? | Many icons are available for free use, but specific licensing terms vary by asset.",
-    "app-icons: утверждения о лицензиях, доступе или составе каталога (4) — проверьте перед публикацией: Do I need an account to download app icons? | Check the license information displayed next to each asset to see if registration is required for your intended use.",
-    "folder-icons: утверждения о лицензиях, доступе или составе каталога (4) — проверьте перед публикацией: Choose the right format for your project and check the license. | Some assets may be free with attribution, while others require a subscription."
+    "модель забыла 1 групп; 1 пристроены по общим словам, 0 стали отдельными страницами",
+    "кластер «icons» из 12 групп разделён на 12: слишком широкий для одной страницы",
+    "10 лексических групп не вошли в набор из 10 страниц",
+    "custom-cursor: title обрезан с 65 символов",
+    "custom-cursor: секций 2, добраны шаблонными",
+    "custom-cursor: утверждения о лицензиях, доступе или составе каталога (1) — проверьте перед публикацией: Do I need an account to get a custom mouse pointer?",
+    "icons: утверждения о лицензиях, доступе или составе каталога (6) — проверьте перед публикацией: Choose the right format like SVG or PNG for your project and check the license details. | Some assets may require attribution, while others offer broader rights depending on your account status.",
+    "icon-download: утверждения о лицензиях, доступе или составе каталога (7) — проверьте перед публикацией: Every icon has a license attached to it. | Some require attribution, while others allow commercial use without credit.",
+    "free-icons: утверждения о лицензиях, доступе или составе каталога (10) — проверьте перед публикацией: Check license terms for each asset. | Free assets often come with specific licensing terms.",
+    "favicon-icon: в тексте есть числа, проверьте их — 512, 512",
+    "favicon-icon: утверждения о лицензиях, доступе или составе каталога (2) — проверьте перед публикацией: Check the license details listed with each asset to confirm usage rights and attribution requirements before downloading. | The library includes options with varying licensing terms; review the specific conditions for each item to see if it fits your budget.",
+    "icon-svg: утверждения о лицензиях, доступе или составе каталога (2) — проверьте перед публикацией: Check licenses for each asset. | Check the license displayed with each specific icon to confirm if commercial use is permitted and if attribution is required.",
+    "desktop-icons: утверждения о лицензиях, доступе или составе каталога (1) — проверьте перед публикацией: Yes, you can use these icons to organize your personal computer screen, but always check the license terms shown with each asset.",
+    "folder-icons: в тексте есть числа, проверьте их — 256, 256",
+    "folder-icons: утверждения о лицензиях, доступе или составе каталога (4) — проверьте перед публикацией: Choose the right look for your app or document interface and check licensing details. | Is attribution required for folder icons?",
+    "ai-icon: утверждения о лицензиях, доступе или составе каталога (2) — проверьте перед публикацией: How do I know which license applies to an icon? | Check the license information displayed next to each specific asset to understand usage rights and attribution rules."
   ]
 }

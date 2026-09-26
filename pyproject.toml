@@ -3,7 +3,11 @@ name = "seo-landings"
 version = "0.1.0"
 description = "Собирает связанные лендинги из выгрузки запросов Google Search Console"
 requires-python = ">=3.11"
-dependencies = []
+# Те же зависимости, что в requirements.txt.
+dependencies = [
+  "jinja2>=3.1",
+  "certifi>=2024.2.2",
+]
 
 [tool.pytest.ini_options]
 # Тесты написаны на стандартном unittest и запускаются без pytest:

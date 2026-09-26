@@ -1,0 +1,52 @@
+{
+  "title": "Free Icons for Web and App Design | Icons8",
+  "meta_description": "Download free icons in SVG, PNG, and other formats. Find simple, modern icons for your projects. Check license terms for each asset.",
+  "h1": "Free Icons for Design Projects",
+  "intro": "Find icons that match your project's style and technical needs. This collection offers assets in common formats like SVG and PNG, allowing you to choose the right file type for web, mobile, or print design.",
+  "sections": [
+    {
+      "heading": "Choose the Right File Format",
+      "paragraphs": [
+        "SVG files are vector-based, meaning they scale to any size without losing quality. They are ideal for web interfaces and responsive designs where crisp edges matter at every resolution. PNG files are raster images with a fixed resolution. They work well for presentations, documents, or older systems that do not support vector graphics.",
+        "Check the file type before downloading to ensure it fits your workflow. Some assets may be available in multiple formats, giving you flexibility depending on where the icon will be used."
+      ]
+    },
+    {
+      "heading": "Match the Visual Style",
+      "paragraphs": [
+        "Icons come in various styles, from flat and minimal to outlined or filled. Consistency is key in design; mixing styles can make an interface look cluttered. Look for sets that share the same stroke width, corner radius, and color palette.",
+        "Simple icons often communicate faster than detailed ones. For small UI elements like buttons or navigation bars, choose clean, recognizable shapes. For larger illustrations or hero sections, more detailed icons may add visual interest."
+      ]
+    },
+    {
+      "heading": "Understand Usage Rights",
+      "paragraphs": [
+        "Free assets often come with specific licensing terms. Some may require attribution, while others allow commercial use without credit. Always review the license information displayed with each icon to avoid legal issues.",
+        "If you plan to use icons in a client project or a product for sale, verify that the license covers commercial usage. When in doubt, check the terms or consider upgrading to a plan that offers broader rights."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Can I use free icons for commercial projects?",
+      "answer": "It depends on the specific license attached to each icon. Some free icons allow commercial use, while others may require attribution or a paid license. Always check the terms before using them in a product for sale."
+    },
+    {
+      "question": "What is the difference between SVG and PNG icons?",
+      "answer": "SVG is a vector format that scales infinitely without quality loss, making it best for web and app design. PNG is a raster format with a fixed resolution, suitable for documents or presentations where scaling is not needed."
+    },
+    {
+      "question": "Do I need to give credit for free icons?",
+      "answer": "Some free icons require attribution, meaning you must credit the creator. Others do not. The license details for each icon will specify whether attribution is mandatory."
+    },
+    {
+      "question": "Can I edit the free icons?",
+      "answer": "You can usually edit SVG files in vector graphics software. PNG files can be edited in image editors, but scaling them up may reduce quality. Check the license to see if modification is permitted."
+    },
+    {
+      "question": "Are these icons available in multiple colors?",
+      "answer": "Many icons are available in single-color or multi-color versions. You can often change the color of vector icons to match your brand palette directly in your design tool."
+    }
+  ],
+  "anchor_text": "download free icons"
+}
