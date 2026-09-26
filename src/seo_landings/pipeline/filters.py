@@ -36,6 +36,7 @@ class FilterPolicy:
 
     brand_aliases: tuple[str, ...] = ()
     brand_fuzzy_distance: int = 1
+    brand_products: tuple[str, ...] = ()
     min_impressions: int = 0
     non_english_markers: tuple[str, ...] = DEFAULT_NON_ENGLISH_MARKERS
     third_party_markers: tuple[str, ...] = ()
@@ -57,9 +58,14 @@ class FilterPolicy:
             alias for alias in (squash(a) for a in settings.get("brand.aliases", [])) if alias
         )
         markers = settings.get("market.non_english_markers") or DEFAULT_NON_ENGLISH_MARKERS
+        products = tuple(
+            " ".join(_WORD.findall(str(product).casefold()))
+            for product in settings.get("brand.products", []) or []
+        )
         return cls(
             brand_aliases=aliases,
             brand_fuzzy_distance=int(settings.get("brand.fuzzy_distance", 1)),
+            brand_products=tuple(product for product in products if product),
             min_impressions=int(settings.get("input.min_impressions", 0)),
             non_english_markers=tuple(markers),
             third_party_markers=tuple(settings.get("offline.third_party_markers", [])),
@@ -127,6 +133,8 @@ def is_own_brand(text: str, policy: FilterPolicy) -> bool:
     «icons» отличается от «icons8» на один символ и был бы отброшен как
     брендовый — а это самый ценный общий запрос в выгрузке.
     """
+    if _mentions_product(text, policy.brand_products):
+        return True
     if not policy.brand_aliases:
         return False
 
@@ -142,6 +150,19 @@ def is_own_brand(text: str, policy: FilterPolicy) -> bool:
         ):
             return True
     return False
+
+
+def _mentions_product(text: str, products: tuple[str, ...]) -> bool:
+    """Название собственного продукта — слово целиком, без нечёткого поиска.
+
+    Цифры в названиях продуктов нет, и нечёткое сравнение тут опасно:
+    «lunacy» на одну правку от чего-нибудь общеупотребительного. Поэтому
+    только точное совпадение слов.
+    """
+    if not products:
+        return False
+    words = " " + " ".join(_WORD.findall(strip_accents(text).casefold())) + " "
+    return any(f" {product} " in words for product in products)
 
 
 def non_english_marker(text: str, policy: FilterPolicy) -> str | None:

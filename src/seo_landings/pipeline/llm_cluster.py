@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from ..domain.models import Cluster, Intent, LexicalGroup
 from ..llm.client import LLMClient, LLMError
 from ..llm.prompts import PromptError, load_prompt
-from ..settings import Settings
+from ..settings import Settings, model_chain
 from .cluster import (
     ClusterPolicy,
     _ensure_unique_slugs,
@@ -67,9 +67,7 @@ def build_clusters(
     system, user = prompt.render(
         site=settings.get("site.base_url", ""),
         site_name=settings.get("site.name", ""),
-        business=settings.get(
-            "site.business", "a catalog of design assets: icons, illustrations, 3D graphics"
-        ),
+        business=settings.get("site.business", ""),
         target=policy.target,
         count=len(groups),
         groups=listing,
@@ -78,7 +76,7 @@ def build_clusters(
     try:
         payload = client.complete_json(
             stage=STAGE,
-            model=settings.get("models.cluster", ""),
+            model=model_chain(settings, "cluster"),
             system=system,
             user=user,
             validate=_has_clusters,

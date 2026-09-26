@@ -5,8 +5,11 @@ __pycache__/
 venv/
 *.egg-info/
 
-# LLM response cache — regenerated on every run
-.cache/
+# Кэш ответов модели лежит в репозитории: с ним прогон на data/gsc_queries.csv
+# воспроизводит страницы из out/ без ключа и без затрат. Остальное в .cache —
+# нет.
+.cache/*
+!.cache/llm/
 
 # macOS
 .DS_Store

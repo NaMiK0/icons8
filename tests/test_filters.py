@@ -40,9 +40,10 @@ class BrandTests(unittest.TestCase):
                 self.assertTrue(filters.decide(query(text), policy()).keep)
 
     def test_unrelated_query_with_a_digit_survives(self):
+        brand_only = policy(use_offline_markers=False)
         for text in ("icon pack for windows 11", "3d icons", "graphic design trends 2027"):
             with self.subTest(query=text):
-                self.assertTrue(filters.decide(query(text), policy()).keep)
+                self.assertTrue(filters.decide(query(text), brand_only).keep)
 
     def test_keep_brand_flag_reverses_the_decision(self):
         decision = filters.decide(query("icons8"), policy(keep_brand=True))

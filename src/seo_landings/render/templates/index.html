@@ -12,10 +12,12 @@
         <tr>
           <th scope="col">Landing page</th>
           <th class="num" scope="col">Searches</th>
+          {% if show_metrics %}
           <th class="num" scope="col">Clicks</th>
           <th class="num" scope="col">Impressions</th>
           <th class="num" scope="col">Avg. position</th>
           <th class="num" scope="col">Potential</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -23,10 +25,12 @@
         <tr>
           <td><a href="{{ page.href }}">{{ page.anchor }}</a></td>
           <td class="num">{{ page.queries }}</td>
+          {% if show_metrics %}
           <td class="num">{{ page.clicks }}</td>
           <td class="num">{{ page.impressions }}</td>
           <td class="num">{{ page.position }}</td>
           <td class="num">{{ page.potential }}</td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>

@@ -98,7 +98,7 @@ class LLMConfig:
         temperature = get("llm.temperature")
         return cls(
             base_url=os.environ.get("LLM_BASE_URL") or DEFAULT_BASE_URL,
-            api_key=os.environ.get("LLM_API_KEY") or os.environ.get("ANTHROPIC_API_KEY") or "",
+            api_key=os.environ.get("LLM_API_KEY") or "",
             temperature=float(temperature) if temperature is not None else None,
             max_retries=int(get("llm.max_retries") or 4),
             timeout=int(get("llm.timeout") or DEFAULT_TIMEOUT),
@@ -116,6 +116,8 @@ class LLMClient:
     usage: dict[str, Usage] = field(default_factory=dict)
     transport: Callable[[dict[str, Any]], dict[str, Any]] | None = None
     """Чем отправлять запрос. По умолчанию — HTTP; подменяется в тестах."""
+    fallbacks: list[str] = field(default_factory=list)
+    """Переходы на запасную модель — попадают в предупреждения отчёта."""
 
     @property
     def available(self) -> bool:
@@ -125,20 +127,59 @@ class LLMClient:
         self,
         *,
         stage: str,
-        model: str,
+        model: str | list[str],
         system: str,
         user: str,
         validate: Callable[[dict[str, Any]], bool] | None = None,
     ) -> dict[str, Any]:
-        """Запросить JSON-ответ, переспросив при негодном.
+        """Запросить JSON-ответ, при неудаче перейдя к запасной модели.
+
+        `model` — одна модель или цепочка: основная, затем запасные. Модель
+        считается не ответившей, если после всех повторов нет годного JSON
+        или API вернул ошибку, которую повторять бессмысленно (например,
+        модель снята с каталога). Тогда запрос уходит следующей.
 
         `validate` проверяет форму ответа глазами стадии: клиенту неизвестно,
         что именно она ждёт, а различать «модель ответила» и «модель ответила
         осмысленно» нужно до того, как ответ ляжет в кэш.
         """
+        chain = [model] if isinstance(model, str) else [name for name in model if name]
+        if not chain:
+            raise LLMError(f"для стадии {stage} не задана модель")
+        # Ключ проверяется только перед походом в сеть: сохранённый ответ
+        # можно отдать и без него — так прогон на данных из репозитория
+        # воспроизводит страницы из out/ у того, у кого ключа нет.
+
+        errors: list[str] = []
+        for index, name in enumerate(chain):
+            try:
+                return self._complete_with(stage, name, system, user, validate)
+            except LLMError as error:
+                errors.append(f"{name}: {error}")
+                if not self.available:
+                    continue  # без ключа переход на запасную модель — не событие
+                if index + 1 < len(chain):
+                    note = (
+                        f"стадия {stage}: {name} не ответила ({error}) — "
+                        f"переход на {chain[index + 1]}"
+                    )
+                    log.warning(note)
+                    self.fallbacks.append(note)
+
+        raise LLMError("ни одна модель не ответила — " + "; ".join(errors))
+
+    def _complete_with(
+        self,
+        stage: str,
+        model: str,
+        system: str,
+        user: str,
+        validate: Callable[[dict[str, Any]], bool] | None,
+    ) -> dict[str, Any]:
+        """Один запрос к одной модели: кэш, повторы на негодный JSON."""
         payload = self._payload(model, system, user)
         key = cache_key(payload)
-        tracker = self.usage.setdefault(stage, Usage(stage=stage, model=model))
+        tracker = self.usage.setdefault(f"{stage}:{model}", Usage(stage=stage, model=model))
 
         cached = self.cache.get(key)
         if cached is not None:

@@ -113,14 +113,14 @@ class ClientTests(unittest.TestCase):
             stage="classify", model="m", system="s", user="u"
         )
         self.assertEqual(result, {"items": [1]})
-        self.assertEqual(self.client.usage["classify"].calls, 1)
+        self.assertEqual(self.client.usage["classify:m"].calls, 1)
 
     def test_second_call_comes_from_cache(self):
         sent = self._answer('{"items": [1]}')
         for _ in range(2):
             self.client.complete_json(stage="classify", model="m", system="s", user="u")
         self.assertEqual(len(sent), 1)
-        self.assertEqual(self.client.usage["classify"].cache_hits, 1)
+        self.assertEqual(self.client.usage["classify:m"].cache_hits, 1)
 
     def test_bad_answer_is_retried(self):
         sent = self._answer("null", '{"items": [1]}')

@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from ..domain.models import Decision, Query
-from ..domain.reasons import LABELS
+from ..domain.reasons import LABELS, Reason
 
 
 @dataclass(slots=True)
@@ -33,17 +33,23 @@ class RunReport:
             self.warnings.append(message)
 
     def add_filter_stats(self, decisions: list[Decision]) -> None:
+        """Сводка по всем запросам выгрузки: что на страницах, что исключено.
+
+        Клики и потенциал склеенных дублей в итоги не входят: они уже
+        прибавлены к запросу, с которым склеены, и посчитались бы дважды.
+        """
         kept = [d for d in decisions if d.keep]
         dropped = [d for d in decisions if not d.keep]
+        countable = [d for d in dropped if d.reason is not Reason.DUPLICATE]
         by_reason = Counter(d.reason.value for d in dropped)
 
         self.filters = {
             "kept": len(kept),
             "dropped": len(dropped),
             "kept_clicks": sum(d.query.clicks for d in kept),
-            "dropped_clicks": sum(d.query.clicks for d in dropped),
+            "dropped_clicks": sum(d.query.clicks for d in countable),
             "kept_potential": round(sum(d.query.potential for d in kept)),
-            "dropped_potential": round(sum(d.query.potential for d in dropped)),
+            "dropped_potential": round(sum(d.query.potential for d in countable)),
             "by_reason": {
                 reason: {
                     "queries": count,

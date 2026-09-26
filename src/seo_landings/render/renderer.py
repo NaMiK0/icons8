@@ -34,6 +34,8 @@ class SiteMeta:
     cluster_source: str
     language: str = "en"
     generated_at: str = ""
+    show_metrics: bool = True
+    """Внутренняя аналитика на страницах: клики, показы, позиции, исключения."""
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -96,7 +98,7 @@ class Renderer:
                 "position": "—" if query.position is None else f"{query.position:.1f}",
             }
             for query in queries[:SEARCHES_SHOWN]
-        ]
+        ] if self.meta.show_metrics else []
 
         html = self.env.get_template("landing.html").render(
             lang=self.meta.language,
@@ -151,7 +153,8 @@ class Renderer:
                 f"queries in {self.meta.source_file}. Every page links to the others."
             ),
             pages=pages,
-            excluded=excluded,
+            show_metrics=self.meta.show_metrics,
+            excluded=excluded if self.meta.show_metrics else [],
             meta=self.meta.as_dict(),
             json_ld=self._index_json_ld(clusters),
         )

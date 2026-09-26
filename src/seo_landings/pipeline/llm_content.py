@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from ..domain.models import Cluster, FaqItem, PageContent, Section
 from ..llm.client import LLMClient, LLMError
 from ..llm.prompts import PromptError, load_prompt
-from ..settings import Settings
+from ..settings import Settings, model_chain
 from .content import (
     DESCRIPTION_LIMIT,
     TITLE_LIMIT,
@@ -58,9 +58,7 @@ def build_content(
     system, user = prompt.render(
         site=settings.get("site.base_url", ""),
         site_name=site_name,
-        business=settings.get(
-            "site.business", "a catalog of design assets: icons, illustrations, 3D graphics"
-        ),
+        business=settings.get("site.business", ""),
         keyword=cluster.primary_keyword,
         intent=cluster.intent,
         queries=_queries(cluster),
@@ -72,7 +70,7 @@ def build_content(
     try:
         payload = client.complete_json(
             stage=STAGE,
-            model=settings.get("models.content", ""),
+            model=model_chain(settings, "content"),
             system=system,
             user=user,
             validate=_looks_like_a_page,

@@ -3,6 +3,10 @@
 Правило приоритета: флаг CLI > config.toml > встроенный дефолт. Поэтому
 значения по умолчанию у аргументов — None: только так видно, задал ли
 пользователь флаг явно.
+
+Переключатели парные (--llm / --no-llm): постоянное значение живёт в
+config.toml с комментарием, что оно включает, а флаг меняет его на один
+запуск в любую сторону.
 """
 
 import argparse
@@ -10,6 +14,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from ..settings import Settings, load_settings
+
+SWITCH = argparse.BooleanOptionalAction
 
 
 @dataclass(slots=True)
@@ -26,6 +32,7 @@ class Options:
     keep_third_party: bool
     use_llm: bool
     use_cache: bool
+    show_metrics: bool
     log_level: str
 
 
@@ -33,6 +40,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="run.py",
         description="Собрать связанные лендинги из выгрузки Google Search Console.",
+        epilog="Постоянные значения переключателей — в config/config.toml, разделы [run] и "
+               "[render]; флаги меняют их на один запуск.",
     )
     parser.add_argument("--input", required=True, metavar="PATH",
                         help="выгрузка .csv или .zip из Search Console")
@@ -40,20 +49,32 @@ def build_parser() -> argparse.ArgumentParser:
                         help="каталог результата (по умолчанию: out)")
     parser.add_argument("--config", metavar="PATH", default=None,
                         help="путь к config.toml (по умолчанию: config/config.toml)")
-    parser.add_argument("--max-queries", type=int, default=None, metavar="INT",
-                        help="сколько запросов брать из выгрузки после склейки дублей")
-    parser.add_argument("--target-pages", type=int, default=None, metavar="INT",
-                        help="сколько лендингов собрать (по умолчанию: 10)")
-    parser.add_argument("--tolerance", type=int, default=None, metavar="INT",
-                        help="допустимое отклонение от целевого числа страниц")
-    parser.add_argument("--keep-brand", action="store_true",
-                        help="не отбрасывать запросы своего бренда")
-    parser.add_argument("--keep-third-party", action="store_true",
-                        help="не отбрасывать чужие бренды и связанные с ними символы")
-    parser.add_argument("--no-llm", action="store_true",
-                        help="офлайн-режим: правила и шаблоны, без обращения к модели")
-    parser.add_argument("--no-cache", action="store_true",
-                        help="игнорировать сохранённые ответы модели")
+
+    volume = parser.add_argument_group("объём работы")
+    volume.add_argument("--max-queries", type=int, default=None, metavar="N",
+                        help="сколько запросов брать из выгрузки после склейки дублей "
+                             "([input] max_queries, по умолчанию 500)")
+    volume.add_argument("--target-pages", type=int, default=None, metavar="N",
+                        help="сколько лендингов собрать ([pages] target, по умолчанию 10)")
+    volume.add_argument("--tolerance", type=int, default=None, metavar="N",
+                        help="допустимое отклонение от числа страниц "
+                             "([pages] tolerance, по умолчанию 2)")
+
+    switches = parser.add_argument_group("переключатели (значение по умолчанию — из config.toml)")
+    switches.add_argument("--llm", action=SWITCH, default=None,
+                          help="обращаться к модели; --no-llm — правила и шаблоны без ключа "
+                               "([run] use_llm)")
+    switches.add_argument("--cache", action=SWITCH, default=None,
+                          help="брать ответы модели из кэша; --no-cache — спросить заново "
+                               "([run] use_cache)")
+    switches.add_argument("--keep-brand", action=SWITCH, default=None,
+                          help="оставить запросы своего бренда ([run] keep_brand)")
+    switches.add_argument("--keep-third-party", action=SWITCH, default=None,
+                          help="оставить чужие торговые марки ([run] keep_third_party)")
+    switches.add_argument("--metrics", action=SWITCH, default=None,
+                          help="показывать на страницах клики, показы и позиции; "
+                               "--no-metrics — для публикации ([render] show_search_metrics)")
+
     parser.add_argument("--log-level", default="INFO",
                         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
                         help="подробность вывода (по умолчанию: INFO)")
@@ -72,10 +93,11 @@ def resolve(argv: list[str] | None = None) -> Options:
         max_queries=_first(args.max_queries, settings.get("input.max_queries"), 500),
         target_pages=_first(args.target_pages, settings.get("pages.target"), 10),
         tolerance=_first(args.tolerance, settings.get("pages.tolerance"), 2),
-        use_llm=not args.no_llm,
-        use_cache=not args.no_cache,
-        keep_brand=args.keep_brand,
-        keep_third_party=args.keep_third_party,
+        use_llm=_first(args.llm, settings.get("run.use_llm"), True),
+        use_cache=_first(args.cache, settings.get("run.use_cache"), True),
+        keep_brand=_first(args.keep_brand, settings.get("run.keep_brand"), False),
+        keep_third_party=_first(args.keep_third_party, settings.get("run.keep_third_party"), False),
+        show_metrics=_first(args.metrics, settings.get("render.show_search_metrics"), True),
         log_level=args.log_level,
     )
 

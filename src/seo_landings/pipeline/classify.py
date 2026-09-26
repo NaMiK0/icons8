@@ -18,7 +18,7 @@ from ..domain.reasons import LLM_REASONS, Reason
 from ..domain.text import levenshtein
 from ..llm.client import LLMClient, LLMError
 from ..llm.prompts import Prompt, PromptError, load_prompt
-from ..settings import Settings
+from ..settings import Settings, model_chain
 from .normalize import TYPO_MIN_KEY_LENGTH, lexical_key
 
 log = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ def classify(
         warnings.append(f"классификация пропущена: {error}")
         return ClassifyResult(decisions, warnings, used_llm=False)
 
-    model = settings.get("models.classify", "")
+    model = model_chain(settings, "classify")
     size = batch_size or int(settings.get("llm.batch_size", DEFAULT_BATCH_SIZE))
     verdicts: dict[str, dict] = {}
 
@@ -101,7 +101,7 @@ def classify(
 
 
 def _ask(
-    client: LLMClient, prompt: Prompt, settings: Settings, model: str, batch: list[Query]
+    client: LLMClient, prompt: Prompt, settings: Settings, model: list[str], batch: list[Query]
 ) -> dict[str, dict]:
     """Спросить модель про одну пачку запросов.
 
@@ -117,9 +117,7 @@ def _ask(
     )
     system, user = prompt.render(
         site=settings.get("site.base_url", ""),
-        business=settings.get(
-            "site.business", "a catalog of design assets: icons, illustrations, 3D graphics"
-        ),
+        business=settings.get("site.business", ""),
         market=settings.get("market.language", "en"),
         count=len(batch),
         queries=listing,

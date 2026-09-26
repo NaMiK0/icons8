@@ -1,9 +1,9 @@
-"""Оркестрация прогона.
+"""Оркестрация прогона: от выгрузки до страниц и отчёта.
 
-Собраны стадии чтения, нормализации и фильтрации. Результат печатается
-сводкой и сохраняется в отчёт: на этом этапе уже можно проверить, что
-именно скрипт отбросил и на каком основании, — до того как к делу
-подключится LLM.
+Порядок стадий: чтение → склейка дублей и усечение → правила → модель
+решает, что отбросить → группы → модель собирает кластеры → модель пишет
+тексты → HTML → отчёт. На каждой стадии с моделью есть запасной путь без
+неё, и каждый такой переход виден в предупреждениях отчёта.
 """
 
 import logging
@@ -17,11 +17,11 @@ from ..llm.client import LLMClient, LLMConfig
 from ..pipeline import classify as classify_module
 from ..pipeline import cluster as cluster_module
 from ..pipeline import content as content_module
-from ..pipeline import filters, llm_cluster, llm_content, normalize
+from ..pipeline import accounting, filters, llm_cluster, llm_content, normalize
 from ..render.renderer import Renderer, SiteMeta
 from ..reporting.excluded import write_excluded
 from ..reporting.report import RunReport, describe_queries
-from ..settings import ConfigError
+from ..settings import ConfigError, model_chain
 from . import options as options_module
 
 log = logging.getLogger("seo_landings")
@@ -69,26 +69,41 @@ def main(argv: list[str] | None = None) -> int:
         config=LLMConfig.from_env(options.settings),
         cache=ResponseCache(enabled=options.use_cache),
     )
-    use_llm = options.use_llm and client.available
-    if options.use_llm and not client.available:
-        report.warn("не задан LLM_API_KEY — прогон выполнен без модели")
+    use_llm = options.use_llm
+    if use_llm and not client.available:
+        report.warn(
+            "LLM_API_KEY не задан — модель не вызывается: используются ответы из кэша, "
+            "а где их нет — правила и шаблоны"
+        )
 
-    # Грубые маркеры чужих брендов нужны только там, где модели не будет:
-    # с моделью решение принимает она, а не список слов из конфига.
-    policy = filters.FilterPolicy.from_settings(
-        options.settings,
-        keep_brand=options.keep_brand,
-        keep_third_party=options.keep_third_party,
-        use_offline_markers=not use_llm,
-    )
-    decisions = filters.apply(queries, policy)
-
+    decisions: list[Decision] = []
     if use_llm:
-        classified = classify_module.classify(decisions, client, options.settings)
-        decisions = classified.decisions
+        # С моделью про чужие бренды решает она, а не список слов из конфига.
+        rules_only = filters.FilterPolicy.from_settings(
+            options.settings,
+            keep_brand=options.keep_brand,
+            keep_third_party=options.keep_third_party,
+            use_offline_markers=False,
+        )
+        classified = classify_module.classify(
+            filters.apply(queries, rules_only), client, options.settings
+        )
         for warning in classified.warnings:
             report.warn(warning)
         use_llm = classified.used_llm
+        if use_llm:
+            decisions = classified.decisions
+
+    if not use_llm:
+        # Модели нет или она не ответила — грубые маркеры обязательны, иначе
+        # «instagram logo» проскочит на страницы.
+        offline = filters.FilterPolicy.from_settings(
+            options.settings,
+            keep_brand=options.keep_brand,
+            keep_third_party=options.keep_third_party,
+            use_offline_markers=True,
+        )
+        decisions = filters.apply(queries, offline)
     kept = [decision.query for decision in decisions if decision.keep]
     if not kept:
         print("После фильтров не осталось ни одного запроса.", file=sys.stderr)
@@ -124,6 +139,20 @@ def main(argv: list[str] | None = None) -> int:
     site_name = options.settings.get("site.name", "Icons8")
     content_source = _write_content(clusters, client, options, report, use_llm, site_name)
 
+    decisions = accounting.finalize(
+        decisions,
+        duplicates=duplicates,
+        truncated=truncated,
+        uncovered=uncovered,
+        limit=options.max_queries,
+        pages=len(clusters),
+    )
+    lost = accounting.unaccounted(len(loaded.queries), decisions, clusters)
+    if lost:
+        report.warn(f"{lost} запросов не учтены ни на страницах, ни в исключениях — ошибка учёта")
+    for note in client.fallbacks:
+        report.warn(note)
+
     report.input = {
         "path": str(options.input_path),
         "encoding": loaded.encoding,
@@ -138,9 +167,15 @@ def main(argv: list[str] | None = None) -> int:
     }
     report.mode = {
         "llm": use_llm,
-        "stage": "render",
+        "clustering": cluster_source,
+        "content": content_source,
+        "models": {
+            stage: model_chain(options.settings, stage)
+            for stage in ("classify", "cluster", "content")
+        } if use_llm else None,
         "keep_brand": options.keep_brand,
         "keep_third_party": options.keep_third_party,
+        "show_metrics": options.show_metrics,
         "config": str(options.settings.path) if options.settings.path else None,
     }
     if not use_llm:
@@ -160,6 +195,7 @@ def main(argv: list[str] | None = None) -> int:
         content_source=content_source,
         cluster_source=cluster_source,
         language=options.settings.get("market.language", "en"),
+        show_metrics=options.show_metrics,
     )
     written = Renderer(meta).render_site(
         clusters, options.out_dir, _excluded_rows(report)
@@ -167,14 +203,14 @@ def main(argv: list[str] | None = None) -> int:
     report.write(report_path)
 
     _print_input_summary(options, loaded, len(queries), len(duplicates), len(truncated))
-    _print_filter_summary(report, decisions)
+    _print_filter_summary(report, decisions, len(loaded.queries))
     _print_clusters(clusters)
     _print_groups(groups)
     _print_llm_usage(report, client)
     _print_warnings(report.warnings)
     print(f"\nСтраниц собрано: {len(written) - 1} + хаб → {options.out_dir}/index.html")
     print(f"Отчёт: {report_path}")
-    print(f"Отброшено ({dropped_count}): {excluded_path}")
+    print(f"Исключено ({dropped_count}): {excluded_path}")
 
     return EXIT_OK
 
@@ -268,11 +304,11 @@ def _print_input_summary(
         print(f"  усечено:         {truncated} (лимит --max-queries={options.max_queries})")
 
 
-def _print_filter_summary(report: RunReport, decisions: list[Decision]) -> None:
+def _print_filter_summary(report: RunReport, decisions: list[Decision], total: int) -> None:
     stats = report.filters
     print(
-        f"\nФильтры: оставлено {stats['kept']}, отброшено {stats['dropped']}"
-        f" (кликов отброшено {stats['dropped_clicks']:,}, "
+        f"\nИз {total} строк выгрузки: на страницах {stats['kept']}, исключено {stats['dropped']}"
+        f" (кликов исключено {stats['dropped_clicks']:,}, "
         f"потенциала {stats['dropped_potential']:,})".replace(",", " ")
     )
     for reason, data in stats["by_reason"].items():
@@ -323,7 +359,7 @@ def _print_llm_usage(report: RunReport, client: LLMClient) -> None:
     print("\nРасход модели:")
     for usage in report.llm_usage:
         print(
-            f"  {usage['stage']:<10} {usage['model']:<24} вызовов {usage['calls']}"
+            f"  {usage['stage']:<9} {usage['model']:<25} вызовов {usage['calls']}"
             f" (из кэша {usage['cache_hits']}), токенов вход {usage['input_tokens']},"
             f" выход {usage['output_tokens']}"
             + (f" (рассуждения {usage['reasoning_tokens']})" if usage["reasoning_tokens"] else "")
