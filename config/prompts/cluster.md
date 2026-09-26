@@ -33,6 +33,12 @@ cannot rank for any of its queries and it leaves the set with too few pages.
 When a need splits by format, by platform, by price or by use case, and each
 side has its own demand, those are separate pages.
 
+Do not build a page out of leftovers either. A group that shares its need
+with no other group and is too weak for a page of its own goes to
+`unassigned`: it will be recorded as left out, which is better than a page
+that serves nobody. Every cluster must describe one need — if its rationale
+needs the word "plus", or reads like "miscellaneous", it is not a cluster.
+
 For every cluster give:
 
 - `primary_keyword` — the wording a person would most likely search for; take
@@ -44,11 +50,11 @@ For every cluster give:
 
 Answer with JSON only, no prose and no code fences:
 
-{{"clusters": [{{"primary_keyword": string, "slug": string, "intent": string, "group_keys": [string], "rationale": string}}]}}
+{{"clusters": [{{"primary_keyword": string, "slug": string, "intent": string, "group_keys": [string], "rationale": string}}], "unassigned": [string]}}
 
 Rules for the answer:
 
-- use every group key exactly once, across all clusters
+- every group key appears exactly once: in one cluster or in `unassigned`
 - copy group keys verbatim; they are identifiers, not text to improve
 - return {target} clusters; fewer is acceptable only if the data genuinely
   cannot support that many, and never fewer than half of {target}

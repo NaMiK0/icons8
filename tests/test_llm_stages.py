@@ -91,6 +91,48 @@ class ClusterAssemblyTests(unittest.TestCase):
         self.assertEqual(used, ["free-icon"])
 
 
+class LeftoverBucketTests(unittest.TestCase):
+    """Без корзины модель собирала страницу из остатков: «gun emoji» вместе
+    с «icon download» и «cursors»."""
+
+    def answer(self, clusters, unassigned):
+        payload = cluster_answer(*clusters)
+        payload["unassigned"] = unassigned
+        return payload
+
+    def test_unassigned_groups_are_left_out_not_forced_onto_a_page(self):
+        groups = [group("cursor-custom"), group("mouse-pointer"), group("emoji-gun")]
+        client = FakeClient(self.answer(
+            [("custom cursor", ["cursor-custom", "mouse-pointer"])], ["emoji-gun"]
+        ))
+        result = build(groups, client)
+        on_pages = {g.key for c in result.clusters for g in c.groups}
+        self.assertNotIn("emoji-gun", on_pages)
+        self.assertIn("emoji-gun", {g.key for g in result.uncovered})
+        self.assertTrue(any("не нашла страницы" in w for w in result.warnings))
+
+    def test_unassigned_group_is_not_treated_as_forgotten(self):
+        groups = [group("cursor-custom"), group("emoji-gun")]
+        client = FakeClient(self.answer([("custom cursor", ["cursor-custom"])], ["emoji-gun"]))
+        result = build(groups, client)
+        self.assertFalse(any("забыла" in w for w in result.warnings))
+
+    def test_group_both_on_a_page_and_in_the_bucket_stays_on_the_page(self):
+        groups = [group("cursor-custom"), group("mouse-pointer")]
+        client = FakeClient(self.answer(
+            [("custom cursor", ["cursor-custom", "mouse-pointer"])], ["mouse-pointer"]
+        ))
+        result = build(groups, client)
+        on_pages = {g.key for c in result.clusters for g in c.groups}
+        self.assertIn("mouse-pointer", on_pages)
+        self.assertEqual(result.uncovered, [])
+
+    def test_answer_without_a_bucket_still_works(self):
+        client = FakeClient(cluster_answer(("free icons", ["free-icon"])))
+        result = build([group("free-icon")], client)
+        self.assertEqual(len(result.clusters), 1)
+
+
 class MegaClusterTests(unittest.TestCase):
     """Модель склонна собрать одну широкую страницу «про всё»."""
 
@@ -116,6 +158,24 @@ class MegaClusterTests(unittest.TestCase):
                                                      min_queries_per_cluster=1))
         self.assertGreaterEqual(len(result.clusters), 3)
         self.assertTrue(any("разделён" in w for w in result.warnings))
+
+    def test_broad_page_is_split_before_thin_pages_are_added(self):
+        """Одиночки не должны создавать видимость, что страниц хватает."""
+        broad = [group("png-icon", "icon png", "icons png"),
+                 group("svg-icon", "icon svg", "icons svg"),
+                 group("desktop-icon", "desktop icon", "desktop icons"),
+                 group("folder-icon", "folder icon", "folder icons"),
+                 group("app-icon", "app icon", "app icons")]
+        singles = [group("emoji-gun"), group("cursor"), group("pack-window")]
+        client = FakeClient(cluster_answer(
+            ("icons", [g.key for g in broad]),
+            *[(g.key, [g.key]) for g in singles],
+        ))
+        result = build(broad + singles, client, ClusterPolicy(
+            target=4, tolerance=1, min_queries_per_cluster=2))
+        self.assertTrue(any("разделён" in w for w in result.warnings))
+        thin = [c for c in result.clusters if len(c.queries) < 2]
+        self.assertEqual(thin, [])
 
     def test_indivisible_data_does_not_loop_forever(self):
         groups = [group("icon")]
