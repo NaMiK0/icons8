@@ -35,6 +35,15 @@ MINOR_WORDS = frozenset(
 
 _INVENTED_NUMBER = re.compile(r"\d{3,}")
 
+#: Темы, в которых модель заявляет то, чего не может знать: условия лицензии,
+#: регистрацию, оплату, состав каталога. Полностью запретить их промптом не
+#: получается — у модели нет данных каталога, и пробелы она заполняет сама.
+_CLAIM_TOPICS = re.compile(
+    r"\b(attribution|licen[cs]\w*|free version|sign ?up|account|subscription|"
+    r"premium|paid|purchase|refund|trial|unlimited|watermark)\b",
+    re.IGNORECASE,
+)
+
 
 def build_template_content(cluster: Cluster, site_name: str) -> PageContent:
     """Собрать наполнение страницы без обращения к модели."""
@@ -185,13 +194,39 @@ def title_case(value: str) -> str:
     return joined[:1].upper() + joined[1:]
 
 
+#: Слова, на которых заголовок не должен обрываться.
+DANGLING = frozenset({"and", "or", "for", "with", "to", "of", "in", "on", "the", "a", "an", "&"})
+
+
 def clip(value: str, limit: int) -> str:
-    """Обрезать по границе слова — title и description имеют лимиты."""
+    """Обрезать по границе слова, не оставив висящего хвоста.
+
+    Без этого получается «Custom Cursor: Download and Install for Windows,
+    Mac &» — формально в лимите, но в выдаче выглядит как ошибка.
+    """
     value = " ".join(value.split())
     if len(value) <= limit:
         return value
-    trimmed = value[:limit].rsplit(" ", 1)[0].rstrip(" ,.;:—-")
+
+    words = value[:limit].split(" ")[:-1]
+    while words and (words[-1].casefold().strip(",.;:—-&") in DANGLING or len(words[-1]) < 2):
+        words.pop()
+    trimmed = " ".join(words).rstrip(" ,.;:—-&")
     return trimmed or value[:limit]
+
+
+def risky_claims(text: str) -> list[str]:
+    """Предложения, утверждающие то, чего модель знать не может.
+
+    Не повод забраковать страницу: «check the license before use» —
+    полезная фраза. Но перед публикацией это должен прочитать человек,
+    поэтому такие предложения попадают в отчёт целиком.
+    """
+    found: list[str] = []
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        if _CLAIM_TOPICS.search(sentence):
+            found.append(" ".join(sentence.split())[:160])
+    return found
 
 
 def suspicious_numbers(text: str) -> list[str]:

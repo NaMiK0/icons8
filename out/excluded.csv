@@ -7,21 +7,24 @@ phonepe,4938,23003,0.2147,3.2,third_party_brand,third-party trademark,Query targ
 icons 8,2549,5138,0.4961,2.3,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
 icon 8,2545,4401,0.5783,1.6,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
 shazam,1353,275417,0.0049,2.5,third_party_brand,third-party trademark,Query targets Shazam music app brand,llm
-tiktok blue tick injector,1289,2885,0.4468,1.7,not_a_landing_intent,intent does not fit a catalog landing page,Request for software hack or injector tool,llm
+tiktok blue tick injector,1289,2885,0.4468,1.7,not_a_landing_intent,intent does not fit a catalog landing page,Request for hacking tool to inject badges,llm
+icon maker,795,7531,0.1056,5.3,not_a_landing_intent,intent does not fit a catalog landing page,Intent is to use a creation tool not buy,llm
 shein,756,516874,0.0015,3.2,third_party_brand,third-party trademark,Query targets Shein e-commerce brand,llm
 instagram logo,496,172680,0.0029,7.4,third_party_brand,third-party trademark,Query targets Instagram company logo,llm
 apple logo copy,433,16375,0.0264,6.0,third_party_brand,third-party trademark,Query targets Apple company logo,llm
+icon finder,369,9159,0.0403,4.7,not_a_landing_intent,intent does not fit a catalog landing page,Implies searching for a discovery tool,llm
 8icons,324,848,0.3821,1.6,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
 8icon,322,785,0.4102,4.0,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
-verified badge copy and paste,314,1251,0.251,2.4,not_a_landing_intent,intent does not fit a catalog landing page,Request for fake verification badge copy,llm
+verified badge copy and paste,314,1251,0.251,2.4,third_party_brand,third-party trademark,Refers to platform verification badges generally,llm
 icon8. com,240,286,0.8392,1.0,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
-faceswapper,216,12265,0.0176,6.6,not_a_landing_intent,intent does not fit a catalog landing page,Query targets face swapping software tool,llm
+icon creator,221,2839,0.0778,6.6,not_a_landing_intent,intent does not fit a catalog landing page,Intent is to create icons not buy them,llm
+faceswapper,216,12265,0.0176,6.6,not_a_landing_intent,intent does not fit a catalog landing page,Refers to face swapping software tool,llm
 8 icon,186,369,0.5041,2.8,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
-graphic design trends 2027,139,501,0.2774,2.3,not_a_landing_intent,intent does not fit a catalog landing page,Trend round-up belongs in blog content.,llm
+graphic design trends 2027,139,501,0.2774,2.3,not_a_landing_intent,intent does not fit a catalog landing page,Trend round-up query belongs in a blog post.,llm
 icon8 free icons,126,158,0.7975,1.0,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
 icons8 download,111,239,0.4644,2.9,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
 icons8 background remover,99,219,0.4521,2.2,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
 icon8 logo,99,118,0.839,1.9,own_brand,navigational query for our own brand,навигационный запрос своего бренда,rule
-icon maker free,97,527,0.1841,3.8,not_a_landing_intent,intent does not fit a catalog landing page,"Tool or software request, not an asset.",llm
-icon maker online,97,476,0.2038,3.7,not_a_landing_intent,intent does not fit a catalog landing page,"Online tool request, not a design asset.",llm
+icon maker free,97,527,0.1841,3.8,not_a_landing_intent,intent does not fit a catalog landing page,"Query seeks a tool to create icons, not the icons themselves.",llm
+icon maker online,97,476,0.2038,3.7,not_a_landing_intent,intent does not fit a catalog landing page,"Query seeks a web-based creation tool, not assets.",llm
 kursor myszki do pobrania,89,209,0.4258,1.9,non_english,not English,неанглийское слово: pobrania,rule

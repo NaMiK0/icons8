@@ -17,7 +17,7 @@ from ..llm.client import LLMClient, LLMConfig
 from ..pipeline import classify as classify_module
 from ..pipeline import cluster as cluster_module
 from ..pipeline import content as content_module
-from ..pipeline import filters, normalize
+from ..pipeline import filters, llm_cluster, llm_content, normalize
 from ..render.renderer import Renderer, SiteMeta
 from ..reporting.excluded import write_excluded
 from ..reporting.report import RunReport, describe_queries
@@ -99,7 +99,19 @@ def main(argv: list[str] | None = None) -> int:
     cluster_policy = cluster_module.ClusterPolicy.from_settings(
         options.settings, target=options.target_pages, tolerance=options.tolerance
     )
-    clusters, uncovered = cluster_module.build_clusters(groups, cluster_policy)
+    cluster_source = "lexical"
+    clusters: list[Cluster] = []
+    uncovered: list[LexicalGroup] = []
+    if use_llm:
+        grouped = llm_cluster.build_clusters(groups, client, options.settings, cluster_policy)
+        for warning in grouped.warnings:
+            report.warn(warning)
+        if grouped.used_llm:
+            clusters, uncovered = grouped.clusters, grouped.uncovered
+            cluster_source = "llm"
+
+    if not clusters:
+        clusters, uncovered = cluster_module.build_clusters(groups, cluster_policy)
     if not clusters:
         print("Не удалось собрать ни одного кластера.", file=sys.stderr)
         return EXIT_NOTHING_TO_DO
@@ -110,8 +122,7 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     site_name = options.settings.get("site.name", "Icons8")
-    for item in clusters:
-        item.content = content_module.build_template_content(item, site_name)
+    content_source = _write_content(clusters, client, options, report, use_llm, site_name)
 
     report.input = {
         "path": str(options.input_path),
@@ -146,8 +157,8 @@ def main(argv: list[str] | None = None) -> int:
         site_name=site_name,
         base_url=options.settings.get("site.base_url", "https://example.com/"),
         source_file=options.input_path.name,
-        content_source="template",
-        cluster_source="lexical",
+        content_source=content_source,
+        cluster_source=cluster_source,
         language=options.settings.get("market.language", "en"),
     )
     written = Renderer(meta).render_site(
@@ -166,6 +177,36 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Отброшено ({dropped_count}): {excluded_path}")
 
     return EXIT_OK
+
+
+def _write_content(
+    clusters: list[Cluster],
+    client: LLMClient,
+    options: options_module.Options,
+    report: RunReport,
+    use_llm: bool,
+    site_name: str,
+) -> str:
+    """Наполнить страницы текстом: моделью, а при неудаче — шаблоном."""
+    written_by_llm = 0
+    for item in clusters:
+        if use_llm:
+            result = llm_content.build_content(item, clusters, client, options.settings)
+            for warning in result.warnings:
+                report.warn(warning)
+            item.content = result.content
+            written_by_llm += int(result.used_llm)
+        else:
+            item.content = content_module.build_template_content(item, site_name)
+
+    if not use_llm:
+        return "template"
+    if written_by_llm == len(clusters):
+        return "llm"
+    report.warn(
+        f"текст {len(clusters) - written_by_llm} страниц из {len(clusters)} взят из шаблона"
+    )
+    return "mixed"
 
 
 def _describe_cluster(cluster: Cluster) -> dict:
